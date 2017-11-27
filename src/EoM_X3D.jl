@@ -1,5 +1,3 @@
-
-
 module EoM_X3D
 
 import EoM
