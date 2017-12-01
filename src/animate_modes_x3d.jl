@@ -15,22 +15,22 @@ function animate_modes(syst)
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-disp("Animating mode shapes.  This may take some time...")
-[vect,val]=eig(syst.eom.fof.state_space.a)
+println("Animating mode shapes. This may take some time...")
 
+val,vect=eig(syst.eom.fof.state_space.a)
 lcns=[syst.data.bodys(1:end-1).location]
 
-tout=[0:1/200:1]  ##  n point interpolation
+tout=collect(0:1/200:1)' ## n point interpolation
 
 modes=syst.eom.rigid.phys*vect
-modes=1e-5*round(modes*1e5) ## Round off
-val=1e-5*round(val*1e5)
+modes=1e-5*round(modes*1e5,RoundNearestTiesAway)
+val=1e-5*round(val*1e5,RoundNearestTiesAway)
 
 for i=1:size(modes,2)  ## For each mode
-	if(norm(modes(:,i))>0)  ## Check for non-zero displacement modes
-		[j,k]=max(abs(modes(:,i)))  ## Find the dominant motion
-		modes(:,i)=modes(:,i)*exp(-sqrt(-1)*angle(modes(k,i)))  ## Rotate the phase angle to the dominant motion
-		modes(:,i)=modes(:,i)/(4*norm(modes(:,i)))  ## Scale motions back to reasonable size
+	if(norm(modes[:,i])>0)  ## Check for non-zero displacement modes
+		[j,k]=max(abs(modes[:,i]))  ## Find the dominant motion
+		modes[:,i]=modes[:,i]*exp(-sqrt(-1)*angle(modes[k,i]))  ## Rotate the phase angle to the dominant motion
+		modes[:,i]=modes[:,i]/(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
 		if(real(val(i,i)))  ## If the system is damped
 			tau=abs(1/real(val(i,i)))  ## Find the time constant (abs in case of unstable)
 		elseif(imag(val(i,i)))  ## If the undamped oscillatory
@@ -38,7 +38,7 @@ for i=1:size(modes,2)  ## For each mode
 		else
 			tau=1/pi  ## Rigid body mode
 		end
-		pout=real(modes(:,i)*exp(val(i,i)*2*tout*tau))  ## Find the time history for two time constants
+		pout=real(modes[:,i]*exp(val(i,i)*2*tout*tau))  ## Find the time history for two time constants
 
 	end
 
@@ -49,10 +49,10 @@ for i=1:size(modes,2)  ## For each mode
 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
 
 	pout=pout'
-	x3d_animate(syst,tout,pout,[syst.config.dir.output filesep() "x3d" filesep() "mode_" num2str(i,"%03i")])
+	x3d_animate(syst,tout,pout,[syst.config.dir.output filesep() "x3d" filesep() "mode_" "$i"])
 end
 
-disp("Animations complete.")
+println("animations complete.")
 end
 
 

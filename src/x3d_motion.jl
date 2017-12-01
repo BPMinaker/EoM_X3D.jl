@@ -1,4 +1,4 @@
-s*=function s=x3d_motion(time,lcn,rtn,scl,grp,x3d)
+s*=function x3d_motion(time,lcn,rtn,scl,grp,x3d)
 ## Copyright (C) 2005, Bruce Minaker
 ## This file is intended for use with Octave.
 ## x3d_motion.m is free software; you can redistribute it and/or modify it
@@ -20,24 +20,24 @@ tme=""
 
 [n,m]=size(time)
 for i=1:m-1
-	pstn=[pstn sprintf("%f %f %f,\n",lcn(:,i))]
+	pstn*=@sprintf("%f %f %f,\n",lcn[:,i])
 end
-pstn=[pstn sprintf("%f %f %f",lcn(:,m))]
+pstn*=@sprintf("%f %f %f",lcn[:,m])
 
 for i=1:m-1
-	rntn=[rntn sprintf("%f %f %f %f,\n",rtn(:,i))]
+	rntn*=@sprintf("%f %f %f %f,\n",rtn[:,i])
 end
-rntn=[rntn sprintf("%f %f %f %f",rtn(:,m))]
+rntn*=@sprintf("%f %f %f %f",rtn[:,m])
 
 for i=1:m-1
-	scal=[scal sprintf("%f %f %f,",scl(:,i))]
+	scal*=@sprintf("%f %f %f,",scl[:,i])
 end
-scal=[scal sprintf("%f %f %f",scl(:,m))]
+scal*=@sprintf("%f %f %f",scl[:,m])
 
 for i=1:m-1
-	tme=[tme sprintf("%f,",time(i))]
+	tme*=@sprintf("%f,",time(i))
 end
-tme=[tme sprintf("%f",time(m))]
+tme*=@sprintf("%f",time(m))
 
 
 ## color interpolation turned off for now - problems with redundant DEFs
@@ -71,5 +71,5 @@ s*= "<ROUTE fromNode=\"IDt" grp "\" fromField=\"value_changed\" toNode=\"ID" grp
 s*= "<ROUTE fromNode=\"IDr" grp "\" fromField=\"value_changed\" toNode=\"ID" grp "\" toField=\"set_rotation\" />\n"
 s*= "<ROUTE fromNode=\"IDs" grp "\" fromField=\"value_changed\" toNode=\"ID" grp "\" toField=\"set_scale\" />\n"
 #s*= "<ROUTE fromNode=\"IDc" grp ""\" fromField=\"value_changed\" toNode=\"rnbw\" toField=\"diffuseColor\" />\n"
-
+s
 end

@@ -1,4 +1,4 @@
-function s=x3d_cyl(x,varargin)
+function x3d_cyl(x,varargin)
 ## Copyright (C) 2006 Bruce Minaker
 ##
 ##
@@ -36,18 +36,18 @@ col=[0.3;0.4;0.9]
 
 i = 1
 while(i <= nargin-1)
-	tmp=varargin{i}
+	tmp=varargin[i]
 	i=i+1
-	if(strcmp(tmp,"cone"))
+	if(tmp=="cone")
 		cone=1
-	elseif(strcmp(tmp,"rad"))
-		rad=varargin{i}
+	elseif(tmp=="rad")
+		rad=varargin[i]
 		i=i+1
-	elseif(strcmp(tmp,"col"))
-		col=varargin{i}
+	elseif(tmp=="col")
+		col=varargin[i]
 		i=i+1
-	elseif(strcmp(tmp,"tran"))
-		tran=varargin{i}
+	elseif(tmp=="tran")
+		tran=varargin[i]
 		i=i+1
 	end
 end
@@ -57,8 +57,8 @@ s=""
 
 # Make col 3xn
 if(prod(size(col))==3)
-	col=col(:)
-	col=col(:, ones(1,n))
+	col=col[:]
+	col=col[:, ones(1,n)]
 end
 
 col=col*0.5
@@ -76,19 +76,17 @@ else
 end
 
 for i=2:n
-
-  	d=x(:,i)-x(:,i-1)
+  	d=x[:,i]-x[:,i-1]
   	n=norm(d)
   	if(n)
-
-		t=mean(x(:,[i,i-1])')
-		aa=axisang(x(:,i),x(:,i-1))
-
-		pstn=sprintf("%f %f %f",t) #MAX: SPRINTF HAS TO BE REPLACED
-		rtn=sprintf("%f %f %f %f",aa)#MAX: SPRINTF HAS TO BE REPLACED
-		radius=sprintf("%f",rad)#MAX: SPRINTF HAS TO BE REPLACED
-		height=sprintf("%f",n)#MAX: SPRINTF HAS TO BE REPLACED
-		color=sprintf("%f %f %f",col(:,i))#MAX: SPRINTF HAS TO BE REPLACED
+		t=mean(x[:,[i,i-1]]')
+		aa=axisang(x[:,i],x[:,i-1])
+		
+		pstn=@sprintf("%f %f %f",t) #MAX: SPRINTF HAS TO BE REPLACED
+		rtn=@sprintf("%f %f %f %f",aa)#MAX: SPRINTF HAS TO BE REPLACED
+		radius=@sprintf("%f",rad)#MAX: SPRINTF HAS TO BE REPLACED
+		height=@sprintf("%f",n)#MAX: SPRINTF HAS TO BE REPLACED
+		color=@sprintf("%f %f %f",col(:,i))#MAX: SPRINTF HAS TO BE REPLACED
 		if(tran(i))
 			trans=sprintf("transparency=\"%f\",tran(i)")#MAX: SPRINTF HAS TO BE REPLACED
 		else
@@ -104,4 +102,5 @@ for i=2:n
 		s*= " </Shape>\n"
 		s*= "</Transform>\n"
 	end
+s
 end

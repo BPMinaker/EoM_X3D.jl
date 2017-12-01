@@ -1,4 +1,4 @@
-function s=x3d_pnt(x,varargin)
+function x3d_pnt(x,varargin)
 ## Copyright (C) 2006 Bruce Minaker
 ##
 ##
@@ -15,7 +15,7 @@ function s=x3d_pnt(x,varargin)
 
 ##       s=x3d_pnt(x,...)
 ##
-## Makes a sphere or box at x(:,i)
+## Makes a sphere or box at x[:,i]
 ##
 ## Options :
 ##
@@ -37,21 +37,21 @@ col=[0.3;0.4;0.9]
 
 i = 1
 while(i <= nargin-1)
-    tmp=varargin{i}
+    tmp=varargin[i]
     i=i+1
-    if(strcmp(tmp,"cubes"))
+    if(tmp=="cubes")
         cubes=1
-    elseif(strcmp(tmp,"rad"))
-        rad=varargin{i}
+    elseif(tmp=="rad"))
+        rad=varargin[i]
         i=i+1
 #    elseif(strcmp(tmp,"emit"))
 #        emit=varargin{i}
 #        i=i+1
-    elseif(strcmp(tmp,"col"))
-        col=varargin{i}
+    elseif(tmp=="col")
+        col=varargin[i]
         i=i+1
-    elseif(strcmp(tmp,"tran"))
-        tran=varargin{i}
+    elseif(tmp=="tran")
+        tran=varargin[i]
         i=i+1
     end
 end
@@ -61,8 +61,8 @@ s= ""
 
 ## Make col 3xn
 if(prod(size(col))==3)
-	col=col(:)
-	col=col(:, ones(1,n))
+	col=col[:]
+	col=col[:, ones(1,n)]
 end
 
 col=col*0.5
@@ -74,20 +74,19 @@ end
 if(cubes)
 	shptype="<Box "
 	radtype="size=\""
-	radius=sprintf("%f %f %f",rad)
+    radius=@sprintf("%f %f %f",rad)
 else
 	shptype="<Sphere "
 	radtype="radius=\""
-	radius=sprintf("%f",rad)
+    radius=@sprintf("%f",rad)
 end
 
 
 for i=1:n
-	pstn=sprintf("%f %f %f",x(:,i))
-
-	color=sprintf("%f %f %f",col(:,i))
+    pstn=@sprintf("%f %f %f",x[:,i])
+    color=@sprintf("%f %f %f",col[:,i])
 	if(tran(i))
-		trans=sprintf("transparency=\"%f\"",tran(i))
+        trans=@sprintf("transparency=\"%f\"",tran(i))
 	 else
 		trans=""
 	end
@@ -101,5 +100,5 @@ for i=1:n
 	s*= "  </Appearance>\n"
 	s*= " </Shape>\n"
 	s*= "</Transform>\n"
-
+s
 end
