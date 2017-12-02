@@ -1,6 +1,6 @@
-function x3d_cyl(x,varargin)
-## Copyright (C) 2006 Bruce Minaker
-##
+function x3d_cyl(x;rad=0.005,cone=false,tran=0,col=[0.3,0.4,0.9])
+
+## Copyright (C) 2017 Bruce Minaker
 ##
 ## This program is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by the
@@ -13,94 +13,49 @@ function x3d_cyl(x,varargin)
 ## for more details.
 ##
 
-##       s=x3d_cyl(x,...)
-##
-## Makes a cylinder that links x(:,1) to x(:,2)
-##
-## Options :
-##
-## 'rad' , radius          : Radius of segments         default=0.05
-## 'cone'          : Make a cone rather than cyl
-## 'tran', transparency    : Transparency                  default=0
-## 'col' , col             : Color           default=[ 0.3 0.4 0.9 ]
-## 'emit'          : Use or not emissiveColor default=false
-
 ## A version of E. Grossmann's vrml_cyl, modified to generate x3d format code, rather than VRML
-## Modification by Bruce Minaker, Jan. 2006
-## Original Author:        Etienne Grossmann <etienne@cs.uky.edu>
-
-rad=0.005
-cone=0
-tran=0
-col=[0.3;0.4;0.9]
-
-i = 1
-while(i <= nargin-1)
-	tmp=varargin[i]
-	i=i+1
-	if(tmp=="cone")
-		cone=1
-	elseif(tmp=="rad")
-		rad=varargin[i]
-		i=i+1
-	elseif(tmp=="col")
-		col=varargin[i]
-		i=i+1
-	elseif(tmp=="tran")
-		tran=varargin[i]
-		i=i+1
-	end
-end
+## Modification by Bruce Minaker, Jan. 2017
+## Original Matlab version author: Etienne Grossmann <etienne@cs.uky.edu>
 
 s=""
-[m,n]=size(x)
+m,n=size(x)
 
-# Make col 3xn
-if(prod(size(col))==3)
-	col=col[:]
-	col=col[:, ones(1,n)]
-end
-
-col=col*0.5
-
-if(prod(size(tran))==1)
-	tran=tran(ones(1,n))
-end
-
-if(cone)
+if cone
 	shptype="<Cone "
-	radtype="bottomRadius=\""
+	radtype=" bottomRadius="
 else
 	shptype="<Cylinder "
-	radtype="radius=\""
+	radtype=" radius="
 end
 
 for i=2:n
-  	d=x[:,i]-x[:,i-1]
-  	n=norm(d)
-  	if(n)
-		t=mean(x[:,[i,i-1]]')
+	d=x[:,i]-x[:,i-1]
+	n=norm(d)
+	if n>0
+		t=mean(x[:,i-1:i],2)
 		aa=axisang(x[:,i],x[:,i-1])
-		
-		pstn=@sprintf("%f %f %f",t) #MAX: SPRINTF HAS TO BE REPLACED
-		rtn=@sprintf("%f %f %f %f",aa)#MAX: SPRINTF HAS TO BE REPLACED
-		radius=@sprintf("%f",rad)#MAX: SPRINTF HAS TO BE REPLACED
-		height=@sprintf("%f",n)#MAX: SPRINTF HAS TO BE REPLACED
-		color=@sprintf("%f %f %f",col(:,i))#MAX: SPRINTF HAS TO BE REPLACED
-		if(tran(i))
-			trans=sprintf("transparency=\"%f\",tran(i)")#MAX: SPRINTF HAS TO BE REPLACED
+
+		pstn="'$(t[1]) $(t[2]) $(t[3])'"
+		rtn="'$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'"
+		radius="$rad"
+		height="$n"
+		color="'$(col[1]) $(col[2]) $(col[3])'"
+		if tran==1
+			trans=" transparency=$(tran[i])"
 		else
 			trans=""
 		end
 
-		s*= "<Transform translation=\"" pstn "\"  rotation=\"" rtn "\" >\n"
-		s*= " <Shape>\n"
-		s*= "  " shptype "height=\"" height "\" " radtype radius "\"/>\n"
-		s*= "  <Appearance>\n"
-		s*= "   <Material  emissiveColor=\"" color "\" diffuseColor=\"" color "\" " trans "/>\n"
-		s*= "  </Appearance>\n"
-		s*= " </Shape>\n"
-		s*= "</Transform>\n"
+		s*="<Transform translation="*pstn*" rotation="*rtn*">\n"
+		s*=" <Shape>\n"
+		s*="  "*shptype*"height="*height*radtype*radius*"/>\n"
+		s*="  <Appearance>\n"
+		s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"/>\n"
+		s*="  </Appearance>\n"
+		s*=" </Shape>\n"
+		s*="</Transform>\n"
 	end
+end
+
 s
 end
