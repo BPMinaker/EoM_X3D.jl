@@ -18,7 +18,6 @@ println("Animating mode shapes. This may take some time...")
 
 val=result.e_val
 vect=result.e_vect
-lcns=syst.data.bodys[1:end-1].location
 
 tout=0:1/200:1 ## n point interpolation
 
@@ -27,30 +26,30 @@ modes=vect
 #modes=1e-5*round(modes*1e5,RoundNearestTiesAway)
 #val=1e-5*round(val*1e5,RoundNearestTiesAway)
 
-# for i=1:size(modes,2)  ## For each mode
-# 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
-# 		j,k=max(abs(modes[:,i]))  ## Find the dominant motion
-# 		modes[:,i]=modes[:,i]*exp(-1im*angle(modes[k,i]))  ## Rotate the phase angle to the dominant motion
-# 		modes[:,i]=modes[:,i]/(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
-# 		if(real(val(i,i)))  ## If the system is damped
-# 			tau=abs(1/real(val(i,i)))  ## Find the time constant (abs in case of unstable)
-# 		elseif(imag(val(i,i)))  ## If the undamped oscillatory
-# 			tau=abs(pi/imag(val(i,i)))  ## Find the time constant such that two constants gives one cycle
-# 		else
-# 			tau=1/pi  ## Rigid body mode
-# 		end
-# 		pout=real(modes[:,i]*exp(val(i,i)*2*tout*tau))  ## Find the time history for two time constants
-# 	end
-#
-# 	for j=1:size(lcns,2)  ## For each body
-# 		pout[6*j-5:6*j-3,:]=pout[6*j-5:6*j-3,:]+lcns[:,j]*ones[1,size(pout,2)]  ## Add the static location to the displacement
-# 	end
-#
-# 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
-#
-# 	pout=pout'
-# 	x3d_animate(syst,tout,pout,joinpath( syst.config.dir.output ,"x3d","mode_$i"))
-# end
+for i=1:size(modes,2)  ## For each mode
+	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
+		max=maximum(abs(modes[:,i]))  ## Find the dominant motion
+		modes[:,i]*=exp(-1im*angle(max))  ## Rotate the phase angle to the dominant motion
+		modes[:,i]/=(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
+		if real(val[i])!=0  ## If the system is damped
+			tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
+		elseif imag(val[i])!=0  ## If the undamped oscillatory
+			tau=abs(pi/imag(val[i]))  ## Find the time constant such that two constants gives one cycle
+		else
+			tau=1/pi  ## Rigid body mode
+		end
+		pout=real(modes[:,i]*exp.(val[i]*2*tau*tout'))  ## Find the time history for two time constants
+	end
+
+	for j=1:length(syst.bodys)-1  ## For each body
+		pout[6*j-5:6*j-3,:]+=syst.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
+	end
+
+	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
+
+	pout=pout'
+	x3d_animate(syst,tout,pout,joinpath( syst.config.dir.output ,"x3d","mode_$i"))
+end
 
 println("Animations complete.")
 
