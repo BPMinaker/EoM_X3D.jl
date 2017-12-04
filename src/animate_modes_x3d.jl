@@ -28,7 +28,7 @@ modes=vect
 
 for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
-		max=maximum(abs(modes[:,i]))  ## Find the dominant motion
+		max=maximum(abs.(modes[:,i]))  ## Find the dominant motion
 		modes[:,i]*=exp(-1im*angle(max))  ## Rotate the phase angle to the dominant motion
 		modes[:,i]/=(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
 		if real(val[i])!=0  ## If the system is damped

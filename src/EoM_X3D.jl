@@ -6,7 +6,7 @@ export animate_modes
 
 include("animate_modes_x3d.jl")
 include("eom_draw_x3d.jl")
-
+include("item_locations.jl")
 include("x3d_animate.jl")
 include("x3d_body.jl")
 include("x3d_connections.jl")
