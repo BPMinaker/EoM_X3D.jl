@@ -18,7 +18,7 @@ rntn=""
 scal=""
 tme=""
 
-n,m=size(time)
+m=size(time,2)
 for i=1:m-1
 	pstn*="$(lcn[1,i]) $(lcn[2,i]) $(lcn[3,i]),\n"
 end

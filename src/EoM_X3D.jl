@@ -15,7 +15,6 @@ include("x3d_ifs.jl")
 include("x3d_motion.jl")
 include("x3d_pnt.jl")
 include("x3d_save.jl")
-
-#include(joinpath("tex","tex_bode_pgfplot.jl"))
+include("axisang.jl")
 
 end

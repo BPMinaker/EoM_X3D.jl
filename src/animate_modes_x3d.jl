@@ -1,4 +1,4 @@
-function animate_modes(syst,result)
+function animate_modes(folder,syst,result)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@ function animate_modes(syst,result)
 println("Animating mode shapes. This may take some time...")
 
 val=result.e_val
-vect=result.e_vect
+modes=result.modes
 
 tout=0:1/200:1 ## n point interpolation
 
-modes=vect
 
 #modes=1e-5*round(modes*1e5,RoundNearestTiesAway)
 #val=1e-5*round(val*1e5,RoundNearestTiesAway)
@@ -48,7 +47,7 @@ for i=1:size(modes,2)  ## For each mode
 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
 
 	pout=pout'
-	x3d_animate(syst,tout,pout,joinpath( syst.config.dir.output ,"x3d","mode_$i"))
+	x3d_animate(syst,tout,pout,joinpath(folder,"mode_$i")) # x3d deleted
 end
 
 println("Animations complete.")

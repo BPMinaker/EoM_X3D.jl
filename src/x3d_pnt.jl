@@ -1,4 +1,4 @@
-function x3d_pnt(x;cubes=false,rad=0.01,tran=0,col=[0.3,0.4,0.9])
+function x3d_pnt(x;cubes=false,rad=[0.01, 0.01, 0.01],tran=0,col=[0.3,0.4,0.9])
 
 ## Copyright (C) 2017 Bruce Minaker
 ##
@@ -18,22 +18,22 @@ function x3d_pnt(x;cubes=false,rad=0.01,tran=0,col=[0.3,0.4,0.9])
 ## Original Author:        Etienne Grossmann <etienne@cs.uky.edu>
 
 s=""
-m,n=size(x)
+n=size(x,2)
 
 if cubes
 	shptype="<Box "
 	radtype="size='"
-	radius="$rad $rad $rad"
+	radius="$(rad[1]) $(rad[2]) $(rad[3])"
 else
 	shptype="<Sphere "
 	radtype="radius='"
-	radius="$rad"
+	radius="$(rad[1])"
 end
 
 for i=1:n
 	pstn="$(x[1,i]) $(x[2,i]) $(x[3,i])"
 	color="$(col[1]) $(col[2]) $(col[3])"
-	if tran
+	if tran!=0
 		trans="transparency='$tran'"
 	 else
 		trans=""

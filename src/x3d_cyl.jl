@@ -18,7 +18,7 @@ function x3d_cyl(x;rad=0.005,cone=false,tran=0,col=[0.3,0.4,0.9])
 ## Original Matlab version author: Etienne Grossmann <etienne@cs.uky.edu>
 
 s=""
-m,n=size(x)
+n=size(x,2)
 
 if cone
 	shptype="<Cone "
