@@ -134,8 +134,8 @@ for j=1:length(syst.springs)
 	s4*=x3d_motion(tout,lcn2,aa2,ones(3,size(pout,1)),"$(j)_spring_out",x3d_spring_out)
 end
 
-s=[s1 s2 s3 s4]
-x3d_save(s,[write_file ".x3d"])
+s=string(s1, s2, s3, s4)
+x3d_save(s,string(write_file,".x3d"))
 println("Animation complete.")
 end  ## Leave
 
