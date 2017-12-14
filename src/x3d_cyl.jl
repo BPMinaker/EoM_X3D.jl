@@ -37,11 +37,11 @@ for i=2:n
 
 		pstn="'$(t[1]) $(t[2]) $(t[3])'"
 		rtn="'$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'"
-		radius="$rad"
-		height="$n"
+		radius="'$rad'"
+		height="'$n'"
 		color="'$(col[1]) $(col[2]) $(col[3])'"
 		if tran==1
-			trans=" transparency=$(tran[i])"
+			trans=" transparency='$(tran[i])'"
 		else
 			trans=""
 		end
