@@ -20,22 +20,22 @@ tme=""
 
 m=size(time,2)
 for i=1:m-1
-	pstn*="$(lcn[1,i]) $(lcn[2,i]) $(lcn[3,i]),\n"
+	pstn*="$(lcn[1,i]) $(lcn[2,i]) $(lcn[3,i]), "
 end
-pstn*="$(lcn[1,m]) $(lcn[2,m]) $(lcn[3,m])\n"
+pstn*="$(lcn[1,m]) $(lcn[2,m]) $(lcn[3,m])"
 
 for i=1:m-1
-	rntn*="$(rtn[1,i]) $(rtn[2,i]) $(rtn[3,i]) $(rtn[4,i]),\n"
+	rntn*="$(rtn[1,i]) $(rtn[2,i]) $(rtn[3,i]) $(rtn[4,i]), "
 end
-rntn*="$(rtn[1,m]) $(rtn[2,m]) $(rtn[3,m]) $(rtn[4,m])\n"
+rntn*="$(rtn[1,m]) $(rtn[2,m]) $(rtn[3,m]) $(rtn[4,m])"
 
 for i=1:m-1
-	scal*="$(scl[1,i]) $(scl[2,i]) $(scl[3,i]),\n"
+	scal*="$(scl[1,i]) $(scl[2,i]) $(scl[3,i]), "
 end
-scal*="$(scl[1,m]) $(scl[2,m]) $(scl[3,m])\n"
+scal*="$(scl[1,m]) $(scl[2,m]) $(scl[3,m])"
 
 for i=1:m-1
-	tme*="$(time[i]),"
+	tme*="$(time[i]), "
 end
 tme*="$(time[m])"
 
@@ -52,7 +52,7 @@ tme*="$(time[m])"
 #[1 0 1] magenta
 
 s="<PositionInterpolator DEF='IDt"*grp*"' keyValue='"*pstn*"' key='"*tme*"' />\n"
-s*= "<OrientationInterpolator DEF='IDr"*grp*"' keyValue='"*rntn*"' key='"*tme*"\" />\n"
+s*= "<OrientationInterpolator DEF='IDr"*grp*"' keyValue='"*rntn*"' key='"*tme*"' />\n"
 s*= "<PositionInterpolator DEF='IDs"*grp*"' keyValue='"*scal*"' key='"*tme*"' />\n"
 #s*= "<ColorInterpolator DEF=\"IDc" grp "\" keyValue=\"" clr "\" key=\"" ctme "\" />\n"
 
