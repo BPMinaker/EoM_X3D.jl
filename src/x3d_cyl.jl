@@ -40,11 +40,7 @@ for i=2:n
 		radius="'$rad'"
 		height="'$n'"
 		color="'$(col[1]) $(col[2]) $(col[3])'"
-		if tran==1
-			trans=" transparency='$(tran[i])'"
-		else
-			trans=""
-		end
+		trans=" transparency='$tran'"
 
 		s*="<Transform translation="*pstn*" rotation="*rtn*">\n"
 		s*=" <Shape>\n"

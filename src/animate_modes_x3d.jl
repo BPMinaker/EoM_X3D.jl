@@ -30,14 +30,13 @@ for i=1:size(modes,2)  ## For each mode
 		max=maximum(abs.(modes[:,i]))  ## Find the dominant motion
 		modes[:,i]*=exp(-1im*angle(max))  ## Rotate the phase angle to the dominant motion
 		modes[:,i]/=(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
-		if real(val[i])!=0  ## If the system is damped
-			tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
-		elseif imag(val[i])!=0  ## If the undamped oscillatory
-			tau=abs(pi/imag(val[i]))  ## Find the time constant such that two constants gives one cycle
-		else
-			tau=1/pi  ## Rigid body mode
-		end
-		pout=real(modes[:,i]*exp.(val[i]*2*tau*tout'))  ## Find the time history for two time constants
+
+		tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
+		lam=abs(2pi/imag(val[i]))  ## Find the wavelength
+		tt=min(3*tau,lam)
+		tt==Inf && (tt=1)
+
+		pout=real(modes[:,i]*exp.(val[i]*tt*tout'))  ## Find the time history
 	end
 
 	for j=1:length(syst.bodys)-1  ## For each body
@@ -45,8 +44,8 @@ for i=1:size(modes,2)  ## For each mode
 	end
 
 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
-
 	pout=pout'
+
 	x3d_animate(syst,tout,pout,joinpath(folder,"mode_$i")) # x3d deleted
 end
 

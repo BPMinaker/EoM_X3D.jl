@@ -20,9 +20,9 @@ s*="<!DOCTYPE X3D PUBLIC 'ISO//Web3D//DTD X3D 3.1//EN' 'http://www.web3d.org/spe
 s*="<X3D profile='Interchange' version='3.1' xmlns:xsd='http://www.w3.org/2001/XMLSchema-instance' xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-3.1.xsd'>\n"
 
 s*="<Scene>\n"
-## s*=" <Background groundAngle="1.571" groundColor="0 0.3 0, 0 0.2 0" skyAngle="1.571" skyColor="0 0 0.5, 1 1 1"/>\n"]  ## sky and ground background
-s*="<Transform rotation='1 0 0 -1.571'>\n"  ##  Rotate the entire world to put z up
+s*=" <Background groundAngle='1.571' groundColor='0 0.3 0, 0 0.2 0' skyAngle='1.571' skyColor='0 0 0.5, 0.5 0.5 1'/>\n"  ## sky and ground background
 
+s*="<Transform rotation='1 0 0 -1.571'>\n"  ##  Rotate the entire world to put z up
 s*="<Group DEF='axis'>\n"  ## Generate the arrows at the origin
 s*=" <Transform translation='0 0 0.100' rotation='1 0 0 1.571'>\n"
 s*="  <Shape DEF='cone'>\n"
@@ -62,7 +62,7 @@ s*="<TimeSensor DEF='IDtimer' loop='true' cycleInterval='5.0' />\n"  ## At the l
 s*=frag  ## Insert the incoming x3d content
 
 s*="</Transform>\n"  ## End of world rotation
-s*="</Scene>\n </X3D>\n"  ## End of x3d
+s*="</Background>\n</Scene>\n</X3D>\n"  ## End of x3d
 
 open(flnm,"w") do file
 	write(file,s)

@@ -1,4 +1,4 @@
-function x3d_pnt(x;cubes=false,rad=[0.01, 0.01, 0.01],tran=0,col=[0.3,0.4,0.9])
+function x3d_pnt(x;cubes=false,rad=[0.01,0.01,0.01],tran=0,col=[0.3,0.4,0.9])
 
 ## Copyright (C) 2017 Bruce Minaker
 ##
@@ -32,18 +32,14 @@ end
 
 for i=1:n
 	pstn="$(x[1,i]) $(x[2,i]) $(x[3,i])"
-	color="$(col[1]) $(col[2]) $(col[3])"
-	if tran!=0
-		trans="transparency='$tran'"
-	 else
-		trans=""
-	end
+	color="'$(col[1]) $(col[2]) $(col[3])'"
+	trans=" transparency='$tran'"
 
 	s*="<Transform translation='"*pstn*"' >\n"
 	s*=" <Shape>\n"
 	s*="  "*shptype*radtype*radius*"'/>\n"
 	s*="  <Appearance>\n"
-	s*="   <Material  emissiveColor='"*color*"' diffuseColor='"*color*"' "*trans*"/>\n"
+	s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"/>\n"
 	s*="  </Appearance>\n"
 	s*=" </Shape>\n"
 	s*="</Transform>\n"
