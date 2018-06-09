@@ -62,7 +62,7 @@ s*="<TimeSensor DEF='IDtimer' loop='true' cycleInterval='5.0' />\n"  ## At the l
 s*=frag  ## Insert the incoming x3d content
 
 s*="</Transform>\n"  ## End of world rotation
-s*="</Background>\n</Scene>\n</X3D>\n"  ## End of x3d
+s*="</Scene>\n</X3D>\n"  ## End of x3d
 
 open(flnm,"w") do file
 	write(file,s)
