@@ -88,7 +88,7 @@ end
 s2=""
 link_rad=0.01
 for j=1:length(syst.links)
-	len=norm(syst.links(j).location[2]-syst.links[j].location[1])  ## build x3d link
+	len=norm(syst.links[j].location[2]-syst.links[j].location[1])  ## build x3d link
 	x3d_link=x3d_cyl([[0,0,0] [0,len,0]],rad=link_rad,col=[0,0.5,0])
 
 	ind1=6*nsolid+3*npoint+6*j+(-5:-3)
@@ -97,6 +97,7 @@ for j=1:length(syst.links)
 	lcn1=pout[:,ind1]'
 	lcn2=pout[:,ind2]'
 
+	aa=zeros(4,size(pout,1))
 	for i=1:size(pout,1)
 #		scale(:,i)=[1;norm(lcn2[:,i]-lcn1[:,i])/len;1]
 		aa[1:4,i]=axisang(lcn2[:,i],lcn1[:,i])' # change each column from end points to axis and angle form for x3d standard
@@ -128,7 +129,7 @@ for j=1:length(syst.springs)
 
 	aa1=zeros(4,size(pout,1))
 	aa2=zeros(4,size(pout,1))
-		for i=1:size(pout,1)
+	for i=1:size(pout,1)
 		aa1[1:4,i]=axisang(lcn2[:,i],lcn1[:,i])' # change each column from end points to axis and angle form for x3d standard
 		aa2[1:4,i]=axisang(lcn1[:,i],lcn2[:,i])'
 	end

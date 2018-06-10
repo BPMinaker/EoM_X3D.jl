@@ -16,6 +16,11 @@ function animate_modes(folder,syst,result)
 
 println("Animating mode shapes. This may take some time...")
 
+dir=joinpath(folder,"x3d")
+if(~isdir(dir))
+	mkdir(dir)
+end
+
 val=result.e_val
 modes=result.modes
 
@@ -29,7 +34,7 @@ for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
 		max=maximum(abs.(modes[:,i]))  ## Find the dominant motion
 		modes[:,i]*=exp(-1im*angle(max))  ## Rotate the phase angle to the dominant motion
-		modes[:,i]/=(4*norm(modes[:,i]))  ## Scale motions back to reasonable size
+		modes[:,i]/=(2*norm(modes[:,i]))  ## Scale motions back to reasonable size
 
 		tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
 		lam=abs(2pi/imag(val[i]))  ## Find the wavelength
@@ -46,7 +51,7 @@ for i=1:size(modes,2)  ## For each mode
 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
 	pout=pout'
 
-	x3d_animate(syst,tout,pout,joinpath(folder,"mode_$i")) # x3d deleted
+	x3d_animate(syst,tout,pout,joinpath(dir,"mode_$i")) # x3d deleted
 end
 
 println("Animations complete.")
