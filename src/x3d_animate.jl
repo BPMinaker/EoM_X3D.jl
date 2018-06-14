@@ -15,8 +15,6 @@ function x3d_animate(syst,tout,pout,write_file)
 
 ## This function draws the animated x3d file of the system
 
-println("Animating...")
-
 syst=x3d_body(syst)  ## Fill in the default graphics data
 syst=x3d_connections(syst)  ## Fill in the connection data
 
@@ -138,8 +136,7 @@ for j=1:length(syst.springs)
 end
 
 s=string(s1, s2, s3, s4)
-x3d_save(s,string(write_file,".x3d"))
-println("Animation complete.")
+x3d_save(s,string(write_file,".html"))
 end  ## Leave
 
 #			str=['x3d=''' syst.bodys(j).x3d ''';']  ## and this body has an x3d description

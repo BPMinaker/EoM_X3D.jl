@@ -21,11 +21,11 @@ s=""
 n=size(x,2)
 
 if cubes
-	shptype="<Box "
+	shptype="Box "
 	radtype="size='"
 	radius="$(rad[1]) $(rad[2]) $(rad[3])"
 else
-	shptype="<Sphere "
+	shptype="Sphere "
 	radtype="radius='"
 	radius="$(rad[1])"
 end
@@ -37,9 +37,9 @@ for i=1:n
 
 	s*="<Transform translation='"*pstn*"' >\n"
 	s*=" <Shape>\n"
-	s*="  "*shptype*radtype*radius*"'/>\n"
+	s*="  <"*shptype*radtype*radius*"'></"*shptype*">\n"
 	s*="  <Appearance>\n"
-	s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"/>\n"
+	s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"></Material>\n"
 	s*="  </Appearance>\n"
 	s*=" </Shape>\n"
 	s*="</Transform>\n"

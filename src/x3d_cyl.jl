@@ -21,10 +21,10 @@ s=""
 n=size(x,2)
 
 if cone
-	shptype="<Cone "
+	shptype="Cone "
 	radtype=" bottomRadius="
 else
-	shptype="<Cylinder "
+	shptype="Cylinder "
 	radtype=" radius="
 end
 
@@ -44,9 +44,9 @@ for i=2:n
 
 		s*="<Transform translation="*pstn*" rotation="*rtn*">\n"
 		s*=" <Shape>\n"
-		s*="  "*shptype*"height="*height*radtype*radius*"/>\n"
+		s*="  <"*shptype*"height="*height*radtype*radius*"></"*shptype*">\n"
 		s*="  <Appearance>\n"
-		s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"/>\n"
+		s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"></Material>\n"
 		s*="  </Appearance>\n"
 		s*=" </Shape>\n"
 		s*="</Transform>\n"

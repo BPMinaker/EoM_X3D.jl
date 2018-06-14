@@ -35,17 +35,17 @@ for i=1:m-1
 end
 tme*="$(time[m])"
 
-s="<PositionInterpolator DEF='IDt"*grp*"' keyValue='\n"*pstn*"' key='"*tme*"' />\n"
-s*="<OrientationInterpolator DEF='IDr"*grp*"' keyValue='\n"*rntn*"' key='"*tme*"' />\n"
+s="<PositionInterpolator DEF='IDt"*grp*"' keyValue='\n"*pstn*"' key='"*tme*"'></PositionInterpolator>\n"
+s*="<OrientationInterpolator DEF='IDr"*grp*"' keyValue='\n"*rntn*"' key='"*tme*"'></OrientationInterpolator>\n"
 
 s*="<Transform DEF='ID"*grp*"' >\n"
 s*=x3d
 s*="</Transform>\n"
 
-s*="<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDt"*grp*"' toField='set_fraction' />\n"
-s*="<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDr"*grp*"' toField='set_fraction' />\n"
-s*="<ROUTE fromNode='IDt"*grp*"' fromField='value_changed' toNode='ID"*grp*"' toField='set_translation' />\n"
-s*="<ROUTE fromNode='IDr"*grp*"' fromField='value_changed' toNode='ID"*grp*"' toField='set_rotation' />\n"
+s*="<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDt"*grp*"' toField='set_fraction'></ROUTE>\n"
+s*="<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDr"*grp*"' toField='set_fraction'></ROUTE>\n"
+s*="<ROUTE fromNode='IDt"*grp*"' fromField='value_changed' toNode='ID"*grp*"' toField='set_translation'></ROUTE>\n"
+s*="<ROUTE fromNode='IDr"*grp*"' fromField='value_changed' toNode='ID"*grp*"' toField='set_rotation'></ROUTE>\n"
 
 s
 end
