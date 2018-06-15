@@ -1,4 +1,4 @@
-function x3d_animate(syst,tout,pout,write_file)
+function x3d_animate(syst,tout,pout,file_name)
 ## Copyright (C) 2010, Bruce Minaker, Rob Rieveley
 ## This file is intended for use with Octave.
 ## x3d_animate.m is free software; you can redistribute it and/or modify it
@@ -136,7 +136,7 @@ for j=1:length(syst.springs)
 end
 
 s=string(s1, s2, s3, s4)
-x3d_save(s,string(write_file,".html"))
+x3d_save(s,file_name)
 end  ## Leave
 
 #			str=['x3d=''' syst.bodys(j).x3d ''';']  ## and this body has an x3d description

@@ -51,7 +51,7 @@ for i=1:size(modes,2)  ## For each mode
 	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
 	pout=pout'
 
-	x3d_animate(syst,tout,pout,joinpath(dir,"mode_$i")) # x3d deleted
+	x3d_animate(syst,tout,pout,joinpath(dir,"mode_$i.html"))
 end
 
 println("Animations complete.")

@@ -1,4 +1,4 @@
-function x3d_save(frag,flnm)
+function x3d_save(frag,file_name)
 
 ## Copyright (C) 2017, Bruce Minaker
 ## x3d_save.jl is free software you can redistribute it and/or modify it
@@ -67,7 +67,7 @@ s*="</Transform>\n"  ## End of world rotation
 s*="</Scene>\n"  ## End of x3d
 s*="</x3d>\n</body>\n</html>\n"
 
-open(flnm,"w") do file
+open(file_name,"w") do file
 	write(file,s)
 end
 
