@@ -14,7 +14,7 @@ function animate_modes(folder,syst,result)
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-println("Animating mode shapes. This may take some time...")
+println("Animating mode shapes...")
 
 dir=joinpath(folder,"x3d")
 if(~isdir(dir))
