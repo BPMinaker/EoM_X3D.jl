@@ -32,7 +32,7 @@ for i=2:n
 	d=x[:,i]-x[:,i-1]
 	n=norm(d)
 	if n>0
-		t=mean(x[:,i-1:i],2)
+		t=0.5*(x[:,i-1]+x[:,i])
 		aa=axisang(x[:,i],x[:,i-1])
 
 		pstn="'$(t[1]) $(t[2]) $(t[3])'"
