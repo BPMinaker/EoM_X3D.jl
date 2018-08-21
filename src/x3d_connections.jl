@@ -10,7 +10,7 @@ for i in syst.rigid_points  ## For every rigid point
 	joint_lcn=i.location  ## Find the location
 	for j=1:2  ## For each body it attachs
 		this_body_name=lowercase(syst.bodys[i.body_number[j]].name)
-		if (this_body_name!="ground") && (this_body_name!="chassis") && !contains(this_body_name,"wheel")    ## If it's not the ground or the chassis
+		if (this_body_name!="ground") && (this_body_name!="chassis") && !occursin("wheel",this_body_name)    ## If it's not the ground or the chassis
 			body_lcn=syst.bodys[i.body_number[j]].location  ## Find the body location
 			x3d=x3d_cyl([(joint_lcn-body_lcn) [0,0,0]],rad=link_rad,col=color)  ## Draw the connection
 			syst.bodys[i.body_number[j]].x3d*=x3d  ## Add the x3d to the body
