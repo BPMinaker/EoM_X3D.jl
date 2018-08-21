@@ -1,5 +1,7 @@
 module EoM_X3D
 
+using LinearAlgebra
+
 import EoM
 
 export animate_modes
