@@ -30,8 +30,8 @@ for j=1:nbodys
 
 	if name != "ground" ## If we have a body that's not ground, cause the ground doesn't move
 
-		trans=pout[:,6*j-5:6*j-3]  ## Pull coordinates from input
-		rots=hcat(pout[:,6*j-2:6*j],zeros(size(pout,1)))
+		trans=pout[:,6*j.+(-5:-3)]  ## Pull coordinates from input
+		rots=hcat(pout[:,6*j.+(-2:0)],zeros(size(pout,1)))
 
 		temp1=trans'
 		temp2=rots'
@@ -51,7 +51,7 @@ for j=1:length(syst.rigid_points)
 
 	item=syst.rigid_points[j]
 
-	ind=6*nsolid+3*j+(-2:0)
+	ind=6*nsolid+3*j.+(-2:0)
 	lcn=pout[:,ind]'
 	n=size(pout,1)
 	rot=vcat(zeros(2,n),ones(1,n),zeros(1,n))
@@ -68,7 +68,7 @@ for j=1:length(syst.flex_points)
 
 	item=syst.flex_points[j]
 
-	ind=6*nsolid+3*length(syst.rigid_points)+3*j+(-2:0)
+	ind=6*nsolid+3*length(syst.rigid_points)+3*j.+(-2:0)
 	lcn=pout[:,ind]'
 
 	n=size(pout,1)
@@ -89,8 +89,8 @@ for j=1:length(syst.links)
 	len=norm(syst.links[j].location[2]-syst.links[j].location[1])  ## build x3d link
 	x3d_link=x3d_cyl([[0,0,0] [0,len,0]],rad=link_rad,col=[0,0.5,0])
 
-	ind1=6*nsolid+3*npoint+6*j+(-5:-3)
-	ind2=6*nsolid+3*npoint+6*j+(-2:0)
+	ind1=6*nsolid+3*npoint+6*j.+(-5:-3)
+	ind2=6*nsolid+3*npoint+6*j.+(-2:0)
 
 	lcn1=pout[:,ind1]'
 	lcn2=pout[:,ind2]'
@@ -119,8 +119,8 @@ for j=1:length(syst.springs)
 	x3d_spring_out*=x3d_cyl([[0,len-link_rad,0] [0,len+link_rad,0]],rad=2.3*link_rad,col=[0.5,0.5,0.5])
 	x3d_spring_out*=x3d_pnt([0,0,0],rad=2*link_rad,col=[0.5,0.5,0])
 
-	ind1=6*nsolid+3*npoint+6*length(syst.links)+6*j+(-5:-3)
-	ind2=6*nsolid+3*npoint+6*length(syst.links)+6*j+(-2:0)
+	ind1=6*nsolid+3*npoint+6*length(syst.links)+6*j.+(-5:-3)
+	ind2=6*nsolid+3*npoint+6*length(syst.links)+6*j.+(-2:0)
 
 	lcn1=pout[:,ind1]'
 	lcn2=pout[:,ind2]'

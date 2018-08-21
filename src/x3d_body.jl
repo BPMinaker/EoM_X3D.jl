@@ -10,7 +10,7 @@ for i in syst.bodys  ## Loop over each body
 	x3d=x3d_pnt([0,0,0],cubes=true,rad=[0.04,0.04,0.04],col=[0.5,0,0],tran=0.3)  ## Define default x3d string
 
 	for j=1:length(x3d_tags)  ## Loop over each sig. name
-		if contains(lowercase(i.name),x3d_tags[j])  ## If the body name contains a sig. name, replace the default string
+		if occursin(x3d_tags[j],lowercase(i.name))  ## If the body name contains a sig. name, replace the default string
 			lcn=i.location  ## Record that body"s location
 
 			if j==1 #ground
