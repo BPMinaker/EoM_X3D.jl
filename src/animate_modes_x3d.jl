@@ -42,6 +42,8 @@ for i=1:size(modes,2)  ## For each mode
 		tt==Inf && (tt=1)
 
 		pout=real(modes[:,i]*exp.(val[i]*tt*tout'))  ## Find the time history
+	else
+		pout=zeros( size(modes,1),size(tout,1))
 	end
 
 	for j=1:length(syst.bodys)-1  ## For each body
