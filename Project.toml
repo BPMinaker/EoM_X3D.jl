@@ -1,0 +1,8 @@
+name = "EoM_X3D"
+uuid = "29d18a9a-f19a-11e8-3142-81fd2672d0ac"
+authors = ["BPMinaker <bminaker@uwindsor.ca>"]
+version = "0.1.0"
+
+[deps]
+EoM = "25d7ee20-f19a-11e8-093a-7b526cbd2d90"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
