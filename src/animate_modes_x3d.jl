@@ -1,4 +1,4 @@
-function animate_modes(folder,syst,result)
+function animate_modes(folder,mbd,result;verbose=false)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@ function animate_modes(folder,syst,result)
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-println("Animating mode shapes...")
+verbose && println("Animating mode shapes...")
 
 dir=joinpath(folder,"x3d")
 if(~isdir(dir))
@@ -25,10 +25,6 @@ val=result.e_val
 modes=result.modes
 
 tout=0:1/200:1 ## n point interpolation
-
-
-#modes=1e-5*round(modes*1e5,RoundNearestTiesAway)
-#val=1e-5*round(val*1e5,RoundNearestTiesAway)
 
 for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
@@ -46,17 +42,17 @@ for i=1:size(modes,2)  ## For each mode
 		pout=zeros( size(modes,1),size(tout,1))
 	end
 
-	for j=1:length(syst.bodys)-1  ## For each body
-		pout[6*j-5:6*j-3,:]+=syst.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
+	for j=1:length(mbd.system.bodys)-1  ## For each body
+		pout[6*j-5:6*j-3,:]+=mbd.system.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
 	end
 
-	pout=item_locations(syst,pout)  ## Compute locations of the connecting items
+	pout=item_locations(mbd.system,pout)  ## Compute locations of the connecting items
 	pout=pout'
 
-	x3d_animate(syst,tout,pout,joinpath(dir,"mode_$i.html"))
+	x3d_animate(mbd.system,tout,pout,joinpath(dir,"mode_$i.html"))
 end
 
-println("Animations complete.")
+verbose && println("Animations complete.")
 
 end
 
@@ -75,11 +71,11 @@ end
 #
 #  if(norm(real(rots))>1e-4)  ## Draw the instant axis of rotation (in phase)
 #  	w=real(rots)
-#  	s1=[s1 x3d_cyl([syst.data.bodys(j).location-rad(:,j)-w,syst.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
+#  	s1=[s1 x3d_cyl([mbd.system.data.bodys(j).location-rad(:,j)-w,mbd.system.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
 #  end
 #  if(norm(imag(rots))>1e-4)  ## Draw the instant axis of rotation (out of phase)
 #  	w=imag(rots)
-#  	s1=[s1 x3d_cyl([syst.data.bodys(j).location-rad(:,j)-w,syst.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
+#  	s1=[s1 x3d_cyl([mbd.system.data.bodys(j).location-rad(:,j)-w,mbd.system.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
 #  end
 
 

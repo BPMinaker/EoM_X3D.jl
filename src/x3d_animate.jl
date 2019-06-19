@@ -19,9 +19,9 @@ syst=x3d_body(syst)  ## Fill in the default graphics data
 syst=x3d_connections(syst)  ## Fill in the connection data
 
 nbodys=length(syst.bodys)
-nsolid = nbodys-1
-npoint = length(syst.rigid_points)+length(syst.flex_points)+length(syst.loads)
-nline = length(syst.links)+length(syst.springs)+length(syst.beams)+length(syst.sensors)+length(syst.actuators)
+nsolid=nbodys-1
+npoint=length(syst.rigid_points)+length(syst.flex_points)+length(syst.loads)
+nline=length(syst.links)+length(syst.springs)+length(syst.beams)+length(syst.sensors)+length(syst.actuators)
 
 s1=""
 for j=1:nbodys
