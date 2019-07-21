@@ -1,4 +1,4 @@
-function x3d_save(frag,file_name)
+function x3d_save(frag,file_name,time)
 
 ## Copyright (C) 2017, Bruce Minaker
 ## x3d_save.jl is free software you can redistribute it and/or modify it
@@ -62,7 +62,7 @@ println(file," </Transform>")
 
 println(file,"</Group>") ## End of axis arrows
 
-println(file,"<TimeSensor DEF='IDtimer' loop='true' cycleInterval='5.0'></TimeSensor>")  ## At the loop timer for the animations
+println(file,"<TimeSensor DEF='IDtimer' loop='true' cycleInterval='",time,"'></TimeSensor>")  ## At the loop timer for the animations
 println(file,frag)  ## Insert the incoming x3d content
 
 println(file,"</Transform>")  ## End of world rotation

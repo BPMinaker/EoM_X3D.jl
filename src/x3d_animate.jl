@@ -23,6 +23,9 @@ nsolid=nbodys-1
 npoint=length(syst.rigid_points)+length(syst.flex_points)+length(syst.loads)
 nline=length(syst.links)+length(syst.springs)+length(syst.beams)+length(syst.sensors)+length(syst.actuators)
 
+tscale=tout[end]
+tout/=tscale
+
 s1=""
 for j=1:nbodys
 	lcns=syst.bodys[j].location
@@ -136,7 +139,7 @@ for j=1:length(syst.springs)
 end
 
 s=string(s1, s2, s3, s4)
-x3d_save(s,file_name)
+x3d_save(s,file_name,tscale)
 end  ## Leave
 
 #			str=['x3d=''' syst.bodys(j).x3d ''';']  ## and this body has an x3d description

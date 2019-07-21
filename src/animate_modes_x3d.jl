@@ -24,7 +24,7 @@ end
 val=result.e_val
 modes=result.modes
 
-tout=0:1/200:1 ## n point interpolation
+tout=0:1/200:5.0 ## n point interpolation
 
 for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
@@ -37,7 +37,7 @@ for i=1:size(modes,2)  ## For each mode
 		tt=min(3*tau,lam)
 		tt==Inf && (tt=1)
 
-		pout=real(modes[:,i]*exp.(val[i]*tt*tout'))  ## Find the time history
+		pout=real(modes[:,i]*exp.(val[i]/5.0*tt*tout'))  ## Find the time history
 	else
 		pout=zeros( size(modes,1),size(tout,1))
 	end

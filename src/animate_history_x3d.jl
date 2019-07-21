@@ -29,7 +29,6 @@ pout=item_locations(mbd.system,pout)  ## Compute locations of the connecting ite
 pout=pout'
 
 x3d_animate(mbd.system,tout,pout,joinpath(dir,"history.html"))
-end
 
 verbose && println("Animations complete.")
 
