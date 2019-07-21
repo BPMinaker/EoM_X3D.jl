@@ -5,8 +5,10 @@ using LinearAlgebra
 import EoM
 
 export animate_modes
+export animate_history
 
 include("animate_modes_x3d.jl")
+include("animate_history_x3d.jl")
 include("eom_draw_x3d.jl")
 include("item_locations.jl")
 include("x3d_animate.jl")
