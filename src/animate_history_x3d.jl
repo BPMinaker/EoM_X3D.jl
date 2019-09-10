@@ -16,6 +16,11 @@ function animate_history(folder,mbd,pout,tout;verbose=false)
 
 verbose && println("Animating history...")
 
+l=range(1,step=Int(round(0.05/tout.step.hi)),stop=length(tout))
+
+pout=pout[:,l]
+tout=tout[l]
+
 dir=joinpath(folder,"x3d")
 if(~isdir(dir))
 	mkdir(dir)
