@@ -138,7 +138,7 @@ for j=1:length(syst.springs)
 	s4*=x3d_motion(tout,lcn2,aa2,"$(j)_spring_out",x3d_spring_out)
 end
 
-s=string(s1, s2, s3, s4)
+s=s1*s2*s3*s4
 x3d_save(s,file_name,tscale)
 end  ## Leave
 

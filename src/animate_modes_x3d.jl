@@ -21,16 +21,13 @@ if(~isdir(dir))
 	mkdir(dir)
 end
 
-val=result.e_val
+val=result.mode_vals
 modes=result.modes
 
 tout=0:1/200:5.0 ## n point interpolation
 
 for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
-		max=maximum(abs.(modes[:,i]))  ## Find the dominant motion
-		modes[:,i]*=exp(-1im*angle(max))  ## Rotate the phase angle to the dominant motion
-		modes[:,i]/=(2*norm(modes[:,i]))  ## Scale motions back to reasonable size
 
 		tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
 		lam=abs(2pi/imag(val[i]))  ## Find the wavelength
@@ -39,7 +36,7 @@ for i=1:size(modes,2)  ## For each mode
 
 		pout=real(modes[:,i]*exp.(val[i]/5.0*tt*tout'))  ## Find the time history
 	else
-		pout=zeros( size(modes,1),size(tout,1))
+		pout=zeros(size(modes,1),size(tout,1))
 	end
 
 	for j=1:length(mbd.system.bodys)-1  ## For each body
@@ -53,6 +50,8 @@ for i=1:size(modes,2)  ## For each mode
 end
 
 verbose && println("Animations complete.")
+
+nothing
 
 end
 

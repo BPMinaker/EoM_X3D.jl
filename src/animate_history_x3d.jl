@@ -37,6 +37,8 @@ x3d_animate(mbd.system,tout,pout,joinpath(dir,"history.html"))
 
 verbose && println("Animations complete.")
 
+nothing
+
 end
 
 ###########################################3
