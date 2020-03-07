@@ -1,4 +1,4 @@
-function animate_modes(folder,mbd,result;verbose=false)
+function animate_modes(mbd,result;folder="output",verbose=false)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
