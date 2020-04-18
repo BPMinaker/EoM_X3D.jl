@@ -1,4 +1,4 @@
-function animate_modes(mbd,result;folder="output",verbose=false)
+function animate_modes(system,result;folder="output",verbose=false)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -39,14 +39,14 @@ for i=1:size(modes,2)  ## For each mode
 		pout=zeros(size(modes,1),size(tout,1))
 	end
 
-	for j=1:length(mbd.system.bodys)-1  ## For each body
-		pout[6*j-5:6*j-3,:]+=mbd.system.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
+	for j=1:length(system.bodys)-1  ## For each body
+		pout[6*j-5:6*j-3,:]+=system.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
 	end
 
-	pout=item_locations(mbd.system,pout)  ## Compute locations of the connecting items
+	pout=item_locations(system,pout)  ## Compute locations of the connecting items
 	pout=pout'
 
-	x3d_animate(mbd.system,tout,pout,joinpath(dir,"mode_$i.html"))
+	x3d_animate(system,tout,pout,joinpath(dir,"mode_$i.html"))
 end
 
 verbose && println("Animations complete.")
