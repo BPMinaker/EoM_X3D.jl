@@ -1,6 +1,5 @@
 [[EoM]]
 deps = ["LinearAlgebra","Dates","DelimitedFiles"]
-path = "/home/minaker/Dropbox/Desktop/github/EoM.jl/"
 uuid = "25d7ee20-f19a-11e8-093a-7b526cbd2d90"
 version = "0.1.0"
 

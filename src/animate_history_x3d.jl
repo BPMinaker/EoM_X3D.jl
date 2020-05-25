@@ -40,31 +40,3 @@ verbose && println("Animations complete.")
 nothing
 
 end
-
-###########################################3
-
-#	rc(rad,w,v,bodys)  ## Calculate roll centres
-## *** MODIFIED TO DRAW GROUND PLANE AT -152.6mm FOR VEHICLE MODEL ***
-##st=[st vrml_surf([0;4],[-1.5,1.5],[-.1526 -.1526;-.1526 -.1526])]
-
-#  rad(:,j)=pinv(skew(rots))*trans ## Radius to the instantaneous center of rotation of the body (rad=omega\v)
-#  rad(:,j)=1e-6*round(rad(:,j)*1e6)  ## Round off to allow checks
-#  if(norm(imag(rad(:,j)))>1e-4)
-#  	flag=1
-#  end
-#  rad(:,j)=real(rad(:,j))  ## This should be a real anyway, but drop the complex parts
-#
-#  if(norm(real(rots))>1e-4)  ## Draw the instant axis of rotation (in phase)
-#  	w=real(rots)
-#  	s1=[s1 x3d_cyl([mbd.system.data.bodys(j).location-rad(:,j)-w,mbd.system.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
-#  end
-#  if(norm(imag(rots))>1e-4)  ## Draw the instant axis of rotation (out of phase)
-#  	w=imag(rots)
-#  	s1=[s1 x3d_cyl([mbd.system.data.bodys(j).location-rad(:,j)-w,mbd.system.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
-#  end
-
-
-
-#  if(flag)
-#  	disp("Warning: discarding imaginary centre of rotation - likely pure translation.")
-#  end

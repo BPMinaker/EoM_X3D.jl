@@ -16,7 +16,18 @@ function animate_modes(system,result;folder="output",verbose=false)
 
 verbose && println("Animating mode shapes...")
 
-dir=joinpath(folder,"x3d")
+if ~isdir(folder)  # if no output folder exists
+	mkdir(folder)  # create new empty output folder
+end
+
+# record the date and time for the output filenames, ISO format
+dtstr=Dates.format(now(),"yyyy-mm-dd")
+dir_date=joinpath(folder,dtstr)
+if ~isdir(dir_date)  # if no dated output folder exists
+	mkdir(dir_date)  # create new empty dated output folder
+end
+
+dir=joinpath(dir_date,"x3d")
 if(~isdir(dir))
 	mkdir(dir)
 end
