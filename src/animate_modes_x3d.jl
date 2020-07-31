@@ -1,4 +1,4 @@
-function animate_modes(system,result;folder="output",verbose=false)
+function animate_modes(system,result,args...;folder="output")
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,23 +14,23 @@ function animate_modes(system,result;folder="output",verbose=false)
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
+verbose=any(args.==:verbose)
 verbose && println("Animating mode shapes...")
 
-if ~isdir(folder)  # if no output folder exists
-	mkdir(folder)  # create new empty output folder
-end
+# if no output folder exists create new empty output folder
+~isdir(folder) && (mkdir(folder))
 
 # record the date and time for the output filenames, ISO format
 dtstr=Dates.format(now(),"yyyy-mm-dd")
 dir_date=joinpath(folder,dtstr)
-if ~isdir(dir_date)  # if no dated output folder exists
-	mkdir(dir_date)  # create new empty dated output folder
-end
 
+# if no dated output folder exists, create new empty dated output folder
+~isdir(dir_date) && (mkdir(dir_date))
+
+# remove and recreate x3d folder
 dir=joinpath(dir_date,"x3d")
-if(~isdir(dir))
-	mkdir(dir)
-end
+rm(dir,recursive=true,force=true)
+mkdir(dir)
 
 val=result.mode_vals
 modes=result.modes
