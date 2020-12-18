@@ -27,8 +27,11 @@ dir_date=joinpath(folder,dtstr)
 # if no dated output folder exists, create new empty dated output folder
 ~isdir(dir_date) && (mkdir(dir_date))
 
+dir=joinpath(dir_date,system.name)
+~isdir(dir) && (mkdir(dir))
+
 # remove and recreate x3d folder
-dir=joinpath(dir_date,"x3d")
+dir=joinpath(dir_date,system.name,"x3d")
 rm(dir,recursive=true,force=true)
 mkdir(dir)
 
