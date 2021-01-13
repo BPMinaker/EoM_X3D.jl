@@ -1,4 +1,4 @@
-function animate_modes(system,result,args...;folder="output")
+function animate_modes(system,result,args...;folder="output",scale=1)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ for i=1:size(modes,2)  ## For each mode
 		tt=min(3*tau,lam)
 		tt==Inf && (tt=1)
 
-		pout=real(modes[:,i]*exp.(val[i]/5.0*tt*tout'))  ## Find the time history
+		pout=scale*0.5*real(modes[:,i]*exp.(val[i]/5.0*tt*tout'))  ## Find the time history
 	else
 		pout=zeros(size(modes,1),size(tout,1))
 	end
@@ -60,7 +60,7 @@ for i=1:size(modes,2)  ## For each mode
 	pout=item_locations(system,pout)  ## Compute locations of the connecting items
 	pout=pout'
 
-	x3d_animate(system,tout,pout,joinpath(dir,"mode_$i.html"))
+	x3d_animate(system,tout,pout,joinpath(dir,"mode_$(i)_s=$(round(val[i],digits=3)).html"))
 end
 
 verbose && println("Animations complete.")
