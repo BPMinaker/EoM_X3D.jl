@@ -15,9 +15,6 @@ function x3d_animate(syst,tout,pout,file_name)
 
 ## This function draws the animated x3d file of the system
 
-syst=x3d_body(syst)  ## Fill in the default graphics data
-syst=x3d_connections(syst)  ## Fill in the connection data
-
 nbodys=length(syst.bodys)
 nsolid=nbodys-1
 npoint=length(syst.rigid_points)+length(syst.flex_points)+length(syst.loads)

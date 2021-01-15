@@ -1,4 +1,4 @@
-function x3d_connections(syst)
+function x3d_connections!(syst)
 
 ## GPL here
 # This function builds an x3d model
@@ -42,5 +42,5 @@ for i in syst.springs  ## For every spring
 		end
 	end
 end
-syst
+
 end  ## Leave

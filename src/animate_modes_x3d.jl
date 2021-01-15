@@ -38,7 +38,10 @@ mkdir(dir)
 val=result.mode_vals
 modes=result.modes
 
-tout=0:1/200:5.0 ## n point interpolation
+x3d_body!(system)  ## Fill in the default graphics data
+x3d_connections!(system)  ## Fill in the connection data
+
+tout=0:5/200:5 ## n point interpolation
 
 for i=1:size(modes,2)  ## For each mode
 	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes

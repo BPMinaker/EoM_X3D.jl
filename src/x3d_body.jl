@@ -1,4 +1,4 @@
-function x3d_body(syst)
+function x3d_body!(syst)
 
 ## GPL here
 # This function builds an x3d model
@@ -40,5 +40,5 @@ for i in syst.bodys  ## Loop over each body
  	end
 i.x3d*=x3d  ## Add the x3d to the body
 end
-syst
+
 end  ## Leave
