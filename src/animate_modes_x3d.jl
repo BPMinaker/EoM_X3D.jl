@@ -1,4 +1,4 @@
-function animate_modes(system,result,args...;folder="output",scale=1)
+function animate_modes(system, result, args...;folder="output",scale=1)
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,61 +14,61 @@ function animate_modes(system,result,args...;folder="output",scale=1)
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-verbose=any(args.==:verbose)
-verbose && println("Animating mode shapes...")
+    verbose = any(args .== :verbose)
+    verbose && println("Animating mode shapes...")
 
 # if no output folder exists create new empty output folder
-~isdir(folder) && (mkdir(folder))
+    !isdir(folder) && (mkdir(folder))
 
 # record the date and time for the output filenames, ISO format
-dtstr=Dates.format(now(),"yyyy-mm-dd")
-dir_date=joinpath(folder,dtstr)
+    dtstr = Dates.format(now(), "yyyy-mm-dd")
+    dir_date = joinpath(folder, dtstr)
 
 # if no dated output folder exists, create new empty dated output folder
-~isdir(dir_date) && (mkdir(dir_date))
+    !isdir(dir_date) && (mkdir(dir_date))
 
-dir=joinpath(dir_date,system.name)
-~isdir(dir) && (mkdir(dir))
+    dir = joinpath(dir_date, system.name)
+    !isdir(dir) && (mkdir(dir))
 
 # remove and recreate x3d folder
-dir=joinpath(dir_date,system.name,"x3d")
-rm(dir,recursive=true,force=true)
-mkdir(dir)
+    dir = joinpath(dir_date, system.name, "x3d")
+    rm(dir,recursive=true,force=true)
+    mkdir(dir)
 
-val=result.mode_vals
-modes=result.modes
+    val = result.mode_vals
+    modes = result.modes
 
-x3d_body!(system)  ## Fill in the default graphics data
-x3d_connections!(system)  ## Fill in the connection data
+    x3d_body!(system)  ## Fill in the default graphics data
+    x3d_connections!(system)  ## Fill in the connection data
 
-tout=0:5/200:5 ## n point interpolation
+    tout = 0:5 / 200:5 ## n point interpolation
 
-for i=1:size(modes,2)  ## For each mode
-	if(norm(modes[:,i])>1e-5)  ## Check for non-zero displacement modes
+    for i = 1:size(modes, 2)  ## For each mode
+	if (norm(modes[:,i]) > 1e-5)  ## Check for non-zero displacement modes
 
-		tau=abs(1/real(val[i]))  ## Find the time constant (abs in case of unstable)
-		lam=abs(2pi/imag(val[i]))  ## Find the wavelength
-		tt=min(3*tau,lam)
-		tt==Inf && (tt=1)
+		tau = abs(1 / real(val[i]))  ## Find the time constant (abs in case of unstable)
+		lam = abs(2pi / imag(val[i]))  ## Find the wavelength
+		tt = min(3 * tau, lam)
+		tt == Inf && (tt = 1)
 
-		pout=scale*0.5*real(modes[:,i]*exp.(val[i]/5.0*tt*tout'))  ## Find the time history
+		pout = scale * 0.5 * real(modes[:,i] * exp.(val[i] / 5.0 * tt * tout'))  ## Find the time history
 	else
-		pout=zeros(size(modes,1),size(tout,1))
+		pout = zeros(size(modes, 1), size(tout, 1))
 	end
 
-	for j=1:length(system.bodys)-1  ## For each body
-		pout[6*j-5:6*j-3,:]+=system.bodys[j].location*ones(1,size(pout,2))  ## Add the static location to the displacement
+	for j = 1:length(system.bodys) - 1  ## For each body
+		pout[6 * j - 5:6 * j - 3,:] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
 	end
 
-	pout=item_locations(system,pout)  ## Compute locations of the connecting items
-	pout=pout'
+	pout = item_locations(system, pout)  ## Compute locations of the connecting items
+	pout = pout'
 
-	x3d_animate(system,tout,pout,joinpath(dir,"mode_$(i)_s=$(round(val[i],digits=3)).html"))
-end
+	x3d_animate(system, tout, pout, joinpath(dir, "mode_$(i)_s=$(round(val[i], digits=3)).html"))
+    end
 
-verbose && println("Animations complete.")
+    verbose && println("Animations complete.")
 
-nothing
+    nothing
 
 end
 
@@ -84,7 +84,7 @@ end
 #  	flag=1
 #  end
 #  rad(:,j)=real(rad(:,j))  ## This should be a real anyway, but drop the complex parts
-#
+# 
 #  if(norm(real(rots))>1e-4)  ## Draw the instant axis of rotation (in phase)
 #  	w=real(rots)
 #  	s1=[s1 x3d_cyl([mbd.system.data.bodys(j).location-rad(:,j)-w,mbd.system.data.bodys(j).location-rad(:,j)+w],"rad",0.005,"tran",0.5)]
