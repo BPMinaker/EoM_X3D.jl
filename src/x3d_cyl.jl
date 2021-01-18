@@ -1,4 +1,4 @@
-function x3d_cyl(x;rad=0.005,cone=false,tran=0,col=[0.3,0.4,0.9])
+function x3d_cyl(x;rad=0.005,cone=false,tran=0,shin=0.5,col=[0.3,0.4,0.9])
 
 ## Copyright (C) 2017 Bruce Minaker
 ##
@@ -17,41 +17,42 @@ function x3d_cyl(x;rad=0.005,cone=false,tran=0,col=[0.3,0.4,0.9])
 ## Modification by Bruce Minaker, Jan. 2017
 ## Original Matlab version author: Etienne Grossmann <etienne@cs.uky.edu>
 
-s=""
-n=size(x,2)
+    s=""
+    n=size(x,2)
 
-if cone
-	shptype="Cone "
-	radtype=" bottomRadius="
-else
-	shptype="Cylinder "
-	radtype=" radius="
-end
+    if cone
+        shptype="Cone "
+        radtype=" bottomRadius="
+    else
+        shptype="Cylinder "
+        radtype=" radius="
+    end
 
-for i=2:n
-	d=x[:,i]-x[:,i-1]
-	n=norm(d)
-	if n>0
-		t=0.5*(x[:,i-1]+x[:,i])
-		aa=axisang(x[:,i],x[:,i-1])
+    for i=2:n
+        d=x[:,i]-x[:,i-1]
+        n=norm(d)
+        if n>0
+            t=0.5*(x[:,i-1]+x[:,i])
+            aa=axisang(x[:,i],x[:,i-1])
 
-		pstn="'$(t[1]) $(t[2]) $(t[3])'"
-		rtn="'$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'"
-		radius="'$rad'"
-		height="'$n'"
-		color="'$(col[1]) $(col[2]) $(col[3])'"
-		trans=" transparency='$tran'"
+            pstn="'$(t[1]) $(t[2]) $(t[3])'"
+            rtn="'$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'"
+            radius="'$rad'"
+            height="'$n'"
+            color="'$(col[1]) $(col[2]) $(col[3])'"
+            trans=" transparency='$tran'"
+            shiny=" shininess='$shin'"
 
-		s*="<Transform translation="*pstn*" rotation="*rtn*">\n"
-		s*=" <Shape>\n"
-		s*="  <"*shptype*"height="*height*radtype*radius*"></"*shptype*">\n"
-		s*="  <Appearance>\n"
-		s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"></Material>\n"
-		s*="  </Appearance>\n"
-		s*=" </Shape>\n"
-		s*="</Transform>\n"
-	end
-end
 
-s
+            s*="<Transform translation="*pstn*" rotation="*rtn*">\n"
+            s*=" <Shape>\n"
+            s*="  <"*shptype*"height="*height*radtype*radius*"></"*shptype*">\n"
+            s*="  <Appearance>\n"
+            s*="   <Material emissiveColor="*color*" diffuseColor="*color*" specularColor='1 1 1'"*shiny*trans*"></Material>\n"
+            s*="  </Appearance>\n"
+            s*=" </Shape>\n"
+            s*="</Transform>\n"
+        end
+    end
+    s
 end

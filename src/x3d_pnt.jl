@@ -1,4 +1,4 @@
-function x3d_pnt(x;cubes=false,rad=[0.01,0.01,0.01],tran=0,col=[0.3,0.4,0.9])
+function x3d_pnt(x;cubes=false,rad=[0.01,0.01,0.01],tran=0,shin=0.5,col=[0.3,0.4,0.9])
 
 ## Copyright (C) 2017 Bruce Minaker
 ##
@@ -17,33 +17,33 @@ function x3d_pnt(x;cubes=false,rad=[0.01,0.01,0.01],tran=0,col=[0.3,0.4,0.9])
 ## Modification by Bruce Minaker, Jan. 2006
 ## Original Author:        Etienne Grossmann <etienne@cs.uky.edu>
 
-s=""
-n=size(x,2)
+    s=""
+    n=size(x,2)
 
-if cubes
-	shptype="Box "
-	radtype="size='"
-	radius="$(rad[1]) $(rad[2]) $(rad[3])"
-else
-	shptype="Sphere "
-	radtype="radius='"
-	radius="$(rad[1])"
-end
+    if cubes
+        shptype="Box "
+        radtype="size='"
+        radius="$(rad[1]) $(rad[2]) $(rad[3])"
+    else
+        shptype="Sphere "
+        radtype="radius='"
+        radius="$(rad[1])"
+    end
 
-for i=1:n
-	pstn="$(x[1,i]) $(x[2,i]) $(x[3,i])"
-	color="'$(col[1]) $(col[2]) $(col[3])'"
-	trans=" transparency='$tran'"
+    for i=1:n
+        pstn="$(x[1,i]) $(x[2,i]) $(x[3,i])"
+        color="'$(col[1]) $(col[2]) $(col[3])'"
+        trans=" transparency='$tran'"
+        shiny=" shininess='$shin'"
 
-	s*="<Transform translation='"*pstn*"' >\n"
-	s*=" <Shape>\n"
-	s*="  <"*shptype*radtype*radius*"'></"*shptype*">\n"
-	s*="  <Appearance>\n"
-	s*="   <Material emissiveColor="*color*" diffuseColor="*color*trans*"></Material>\n"
-	s*="  </Appearance>\n"
-	s*=" </Shape>\n"
-	s*="</Transform>\n"
-end
-
-s
+        s*="<Transform translation='"*pstn*"' >\n"
+        s*=" <Shape>\n"
+        s*="  <"*shptype*radtype*radius*"'></"*shptype*">\n"
+        s*="  <Appearance>\n"
+        s*="   <Material emissiveColor="*color*" diffuseColor="*color*" specularColor='1 1 1'"*shiny*trans*"></Material>\n"
+        s*="  </Appearance>\n"
+        s*=" </Shape>\n"
+        s*="</Transform>\n"
+    end
+    s
 end

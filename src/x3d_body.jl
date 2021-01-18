@@ -15,7 +15,7 @@ function x3d_body!(syst)
                 elseif j == 2 || j == 3 || j == 4 # "upright" or "strut" or "arm"
                     x3d = x3d_pnt([0,0,0], rad=0.03, col=[0.5,0,0])
                 elseif j == 5 # "wheel"
-                    x3d = x3d_cyl([[0,abs(lcn[3]) / 4,0] [0,-abs(lcn[3]) / 4,0]], rad=abs(lcn[3]), col=[0.05,0.05,0.05], tran=0.4)
+                    x3d = x3d_cyl([[0,abs(lcn[3]) / 4,0] [0,-abs(lcn[3]) / 4,0]], rad=abs(lcn[3]), col=[0.05,0.05,0.05], tran=0.4 ,shin=1.0)
                     x3d *= x3d_cyl([[0,abs(lcn[3]) / 3.9,0] [0,-abs(lcn[3]) / 3.9,0]], rad=0.8 * abs(lcn[3]), col=[0.25,0.25,0.25], tran=0.8)
                 elseif j == 6 # "chassis"
                     x3d = x3d_pnt([0,0,0], cubes=true, rad=[0.8,0.3,0.4], col=[0,0,0.5], tran=0.3)
