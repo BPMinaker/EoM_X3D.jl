@@ -1,4 +1,4 @@
-function animate_modes(system, result, args...;folder="output",scale=1)
+function animate_modes(system, result, args...;folder="output", scale=1, num=size(result.modes,2))
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -13,6 +13,10 @@ function animate_modes(system, result, args...;folder="output",scale=1)
 ##--------------------------------------------------------------------
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
+
+# check is we are asking to animate more than all the modes
+    m = size(result.modes,2)  
+    num > m && (num = m)
 
     verbose = any(args .== :verbose)
     verbose && println("Animating mode shapes...")
@@ -32,7 +36,7 @@ function animate_modes(system, result, args...;folder="output",scale=1)
 
 # remove and recreate x3d folder
     dir = joinpath(dir_date, system.name, "x3d")
-    rm(dir,recursive=true,force=true)
+    rm(dir, recursive=true, force=true)
     mkdir(dir)
 
     val = result.mode_vals
@@ -43,27 +47,32 @@ function animate_modes(system, result, args...;folder="output",scale=1)
 
     tout = 0:5 / 200:5 ## n point interpolation
 
-    for i = 1:size(modes, 2)  ## For each mode
-	if (norm(modes[:,i]) > 1e-5)  ## Check for non-zero displacement modes
+    if length(scale) == num
+        verbose && println("Using individual mode scaling...")
+    else
+        scale *= ones(length(tout))
+    end
 
-		tau = abs(1 / real(val[i]))  ## Find the time constant (abs in case of unstable)
-		lam = abs(2pi / imag(val[i]))  ## Find the wavelength
-		tt = min(3 * tau, lam)
-		tt == Inf && (tt = 1)
+    for i in 1:num  ## For each mode
+        tau = abs(1 / real(val[i]))  ## Find the time constant (abs in case of unstable)
+        lam = abs(2pi / imag(val[i]))  ## Find the wavelength
+        tt = min(3 * tau, lam)
+        tt == Inf && (tt = 1)
 
-		pout = scale * 0.5 * real(modes[:,i] * exp.(val[i] / 5.0 * tt * tout'))  ## Find the time history
-	else
-		pout = zeros(size(modes, 1), size(tout, 1))
-	end
+        if abs(val[i]) > 1e-4  ## Check for rigid body modes
+            pout = scale[i] * 0.5 * real(modes[:,i] * exp.(val[i] / 5.0 * tt * tout'))  ## Find the time history
+        else
+            pout = scale[i] * 0.5 * real(modes[:,i] * ones(1,length(tout)))
+        end
 
-	for j = 1:length(system.bodys) - 1  ## For each body
-		pout[6 * j - 5:6 * j - 3,:] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
-	end
+        for j = 1:length(system.bodys) - 1  ## For each body
+            pout[6 * j - 5:6 * j - 3,:] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
+        end
 
-	pout = item_locations(system, pout)  ## Compute locations of the connecting items
-	pout = pout'
+        pout = item_locations(system, pout)  ## Compute locations of the connecting items
+        pout = pout'
 
-	x3d_animate(system, tout, pout, joinpath(dir, "mode_$(i)_s=$(round(val[i], digits=3)).html"))
+        x3d_animate(system, tout, pout, joinpath(dir, "mode_$(i)_s=$(round(val[i], digits=3)).html"))
     end
 
     verbose && println("Animations complete.")
