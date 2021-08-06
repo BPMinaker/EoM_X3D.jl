@@ -1,4 +1,4 @@
-function animate_modes(system, result, args...;folder="output", scale=1, num=size(result.modes,2))
+function animate_modes(system::EoM.mbd_system, result::EoM.result, args...;folder="output", scale=1, num=size(result.modes,2))
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by

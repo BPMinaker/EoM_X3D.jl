@@ -75,7 +75,7 @@ function x3d_animate(syst, tout, pout, file_name)
         if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
             x3d = x3d_pnt([0,0,0], rad=0.025, col=[0,0,0.5])
         else
-            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0,0,0.5])
+            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0,0,0.5])
         end
         s1 *= x3d_motion(tout, lcn, rot, "$(j)_flex_point", x3d) ## Add the x3d string for the motion indicated by the mode shape
     end
