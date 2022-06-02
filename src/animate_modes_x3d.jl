@@ -1,4 +1,4 @@
-function animate_modes(system::EoM.mbd_system, result::EoM.analysis, args...;folder="output", scale=1, num=size(result.modes,2))
+function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Bool = false; folder="output", scale=1, num=size(result.modes,2))
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis, args...;fol
     m = size(result.modes,2)  
     num > m && (num = m)
 
-    verbose = any(args .== :verbose)
     verbose && println("Animating mode shapes...")
 
 # if no output folder exists create new empty output folder
