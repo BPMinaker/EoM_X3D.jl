@@ -1,4 +1,4 @@
-function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Bool = false; folder="output", scale=1, num=size(result.modes,2))
+function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Bool = false; folder="output", overwrite::Bool=true, scale=1, num=size(result.modes,2))
 ## Copyright (C) 2017, Bruce Minaker
 ## animate_modes.jl is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Boo
 
 ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-# check is we are asking to animate more than all the modes
+# check if we are asking to animate more than all the modes
     m = size(result.modes,2)  
     num > m && (num = m)
 
@@ -33,10 +33,16 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Boo
     dir = joinpath(dir_date, system.name)
     !isdir(dir) && (mkdir(dir))
 
-# remove and recreate x3d folder
-    dir = joinpath(dir_date, system.name, "x3d")
-    rm(dir, recursive=true, force=true)
-    mkdir(dir)
+# remove and recreate x3d folder (default), or not
+    if overwrite
+        dir = joinpath(dir_date, system.name, "x3d")
+        rm(dir, recursive=true, force=true)
+        mkdir(dir)
+    else
+        tmstr = Dates.format(now(), "HH-MM-SS-s")
+        dir = joinpath(dir_date, system.name, "x3d_" * tmstr)
+        mkdir(dir)
+    end
 
     val = result.mode_vals
     modes = result.modes
