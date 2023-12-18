@@ -1,42 +1,42 @@
-function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Bool = false; folder="output", overwrite::Bool=true, scale=1, num=size(result.modes,2))
-## Copyright (C) 2017, Bruce Minaker
-## animate_modes.jl is free software; you can redistribute it and/or modify it
-## under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2, or (at your option)
-## any later version.
-##
-## animate_modes.jl is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details at www.gnu.org/copyleft/gpl.html.
-##
-##--------------------------------------------------------------------
+function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bool = false; folder = "output", overwrite::Bool = true, scale = 1, num = size(result.modes, 2))
+    ## Copyright (C) 2017, Bruce Minaker
+    ## animate_modes.jl is free software; you can redistribute it and/or modify it
+    ## under the terms of the GNU General Public License as published by
+    ## the Free Software Foundation; either version 2, or (at your option)
+    ## any later version.
+    ##
+    ## animate_modes.jl is distributed in the hope that it will be useful, but
+    ## WITHOUT ANY WARRANTY; without even the implied warranty of
+    ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    ## General Public License for more details at www.gnu.org/copyleft/gpl.html.
+    ##
+    ##--------------------------------------------------------------------
 
-## This function computes the time history of the system from the mode vector, and passes it to the animator
+    ## This function computes the time history of the system from the mode vector, and passes it to the animator
 
-# check if we are asking to animate more than all the modes
-    m = size(result.modes,2)  
-    num > m && (num = m)
+    # check if we are asking to animate more than all the modes
+    m = size(result.modes, 2)
+    num = min(m, num)
 
     verbose && println("Animating mode shapes...")
 
-# if no output folder exists create new empty output folder
+    # if no output folder exists create new empty output folder
     !isdir(folder) && (mkdir(folder))
 
-# record the date and time for the output filenames, ISO format
+    # record the date and time for the output filenames, ISO format
     dtstr = Dates.format(now(), "yyyy-mm-dd")
     dir_date = joinpath(folder, dtstr)
 
-# if no dated output folder exists, create new empty dated output folder
+    # if no dated output folder exists, create new empty dated output folder
     !isdir(dir_date) && (mkdir(dir_date))
 
     dir = joinpath(dir_date, system.name)
     !isdir(dir) && (mkdir(dir))
 
-# remove and recreate x3d folder (default), or not
+    # remove and recreate x3d folder (default), or not
     if overwrite
         dir = joinpath(dir_date, system.name, "x3d")
-        rm(dir, recursive=true, force=true)
+        rm(dir, recursive = true, force = true)
         mkdir(dir)
     else
         tmstr = Dates.format(now(), "HH-MM-SS-s")
@@ -50,7 +50,7 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Boo
     x3d_body!(system)  ## Fill in the default graphics data
     x3d_connections!(system)  ## Fill in the connection data
 
-    tout = 0:5 / 200:5 ## n point interpolation
+    tout = 0:5/200:5 ## n point interpolation
 
     if length(scale) == num
         verbose && println("Using individual mode scaling...")
@@ -65,13 +65,13 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis,verbose::Boo
         tt == Inf && (tt = 1)
 
         if abs(val[i]) > 1e-4  ## Check for rigid body modes
-            pout = scale[i] * 0.5 * real(modes[:,i] * exp.(val[i] / 5.0 * tt * tout'))  ## Find the time history
+            pout = scale[i] * 0.5 * real(modes[:, i] * exp.(val[i] / 5.0 * tt * tout'))  ## Find the time history
         else
-            pout = scale[i] * 0.5 * real(modes[:,i] * ones(1,length(tout)))
+            pout = scale[i] * 0.5 * real(modes[:, i] * ones(1, length(tout)))
         end
 
-        for j = 1:length(system.bodys) - 1  ## For each body
-            pout[6 * j - 5:6 * j - 3,:] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
+        for j ∈ 1:length(system.bodys)-1  ## For each body
+            pout[6*j-5:6*j-3, :] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
         end
 
         pout = item_locations(system, pout)  ## Compute locations of the connecting items
