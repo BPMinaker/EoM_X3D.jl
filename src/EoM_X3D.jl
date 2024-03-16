@@ -7,6 +7,7 @@ import EoM
 
 export animate_modes
 export animate_history
+export eom_draw
 
 include("animate_modes_x3d.jl")
 include("animate_history_x3d.jl")

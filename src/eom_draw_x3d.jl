@@ -1,4 +1,4 @@
-function eom_draw(syst;verbose=false)
+function eom_draw(system::EoM.mbd_system, verbose::Bool = false; folder = "output", overwrite::Bool = true)
 ## Copyright (C) 2017, Bruce Minaker
 ## eom_draw.jl is free software you can redistribute it and/or modify it
 ## under the terms of the GNU General Public License as published by
@@ -12,89 +12,111 @@ function eom_draw(syst;verbose=false)
 ##
 ##--------------------------------------------------------------------
 
-## This function draws the X3D file of the system
-verbose && println("Drawing x3d...")
+    ## This function draws the X3D file of the system
+    verbose && println("Drawing x3d...")
 
-syst=x3d_body(syst)  ## Fill in the default graphics data
-syst=x3d_connections(syst)  ## Fill in the connection data
+    # if no output folder exists create new empty output folder
+    !isdir(folder) && (mkdir(folder))
 
-s=""
-for i=1:syst.data.nbodys
-	item=syst.data.bodys[i]
+    # record the date and time for the output filenames, ISO format
+    dtstr = Dates.format(now(), "yyyy-mm-dd")
+    dir_date = joinpath(folder, dtstr)
+
+    # if no dated output folder exists, create new empty dated output folder
+    !isdir(dir_date) && (mkdir(dir_date))
+
+    dir = joinpath(dir_date, system.name)
+    !isdir(dir) && (mkdir(dir))
+
+    # remove and recreate x3d folder (default), or not
+    if overwrite
+        dir = joinpath(dir_date, system.name, "x3d")
+        rm(dir, recursive = true, force = true)
+        mkdir(dir)
+    else
+        tmstr = Dates.format(now(), "HH-MM-SS-s")
+        dir = joinpath(dir_date, system.name, "x3d_" * tmstr)
+        mkdir(dir)
+    end
+
+    x3d_body!(system)  ## Fill in the default graphics data
+    x3d_connections!(system)  ## Fill in the connection data
+
+
+    s=""
+    for item in system.bodys
 
 #  	## Add a viewpoint for each body, except ground
 #  	lcns=[item.location(:,1)]+[0; 0; 2]
 #  	pstn=sprintf('%f %f %f',lcns)
 #  	s=[s  '<Viewpoint position="' pstn '"/>\n' ]
 
-	s*="<Transform translation='$(item.location[1]) $(item.location[2]) $(item.location[3])' >\n"*item.x3d*"</Transform>\n"
+        s *= "<Transform translation='$(item.location[1]) $(item.location[2]) $(item.location[3])' >\n" * item.x3d * "</Transform>\n"
 
+    end
+
+    for item in system.rigid_points
+        lcn = item.location
+
+        if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
+            s *= x3d_pnt(lcn, rad=0.025, col=[0,0,0.5])
+        else
+            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0.5,0.5,0])
+        end
+    end
+
+    for item in system.flex_points
+        lcn = item.location
+
+        if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
+            s *= x3d_pnt(lcn, rad=0.025, col=[0,0,0.5])
+        else
+            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0,0,0.5])
+        end
+    end
+
+    link_rad = 0.01
+    for item in system.links
+        s *= x3d_cyl([item.location[1] item.location[2]], rad=link_rad, col=[0,0.5,0])
+    end
+
+
+
+link_rad=0.015
+for item in system.springs
+
+	len = item.length
+	frac = 2*link_rad/len
+	temp1 = (1-frac) * item.location[1] + frac * item.location[2]
+	temp2 = 0.35 * item.location[1] + 0.65 * item.location[2]
+	x3d_spring = x3d_cyl([temp1 temp2],rad=2.5 * link_rad, tran=0.3, col=[1,1,0])  ## shell inner
+	x3d_spring *= x3d_pnt(item.location[1], rad=2*link_rad, col=[1,1,0]) ## ball inner
+
+	temp1 = 0.65 * item.location[1] + 0.35 * item.location[2]
+	temp2 = frac * item.location[1] + (1-frac) * item.location[2]
+	x3d_spring_out=x3d_cyl([temp1 temp2], rad = 3 * link_rad, tran = 0.3, col=[1,1,0])  ## shell outer
+
+	frac = 0.65 - link_rad/len
+	temp1 = frac * item.location[1] + (1-frac) * item.location[2]
+	x3d_spring_out *= x3d_cyl([item.location[2] temp1], rad=link_rad, col=[1,1,1]) ## shaft
+
+	frac = 0.65 + link_rad/len
+	temp2 = frac * item.location[1] + (1-frac) * item.location[2]
+	x3d_spring_out *= x3d_cyl([temp1 temp2], rad = 2.3 * link_rad, col=[1,1,1]) ##piston
+	x3d_spring_out *= x3d_pnt(item.location[2], rad = 2 * link_rad, col=[1,1,0]) ## ball outer
+
+	s *= x3d_spring * x3d_spring_out
 end
 
-# for i=1:syst.data.nflex_points
-# 	item=syst.data.flex_points(i)
-# 	lcns=item.location[:,1]
-# 	if((item.forces==3||item.forces==0)&&(item.moments==3||item.moments==0))
-# 		s*= x3d_pnt(lcns,"rad",0.025,"col",[0 0 1])
-# 	else
-# 		s*= x3d_cyl([lcns-0.025*(item.axis)/norm(item.axis),lcns+0.025*(item.axis)/norm(item.axis)],"rad",0.02,"col",[0 0 1])
-# 	end
-# end
-#
-# for i=1:syst.data.nrigid_points
-# 	item=syst.data.rigid_points(i)
-# 	lcns=item.location[:,1]
-# 	if((item.forces==3||item.forces==0)&&(item.moments==3||item.moments==0))
-# 		s*= x3d_pnt(lcns,"rad",0.025,"col",[1 1 0])
-# 	else
-# 		s*= x3d_cyl([lcns-0.025*(item.axis)/norm(item.axis),lcns+0.025*(item.axis)/norm(item.axis)],"rad",0.02,"col",[1 1 0])
-# 	end
-# end
-#
-# link_rad=0.015
-# for i=1:syst.data.nsprings
-# 	item=syst.data.springs(i)
-# 	len=item.length
-# 	frac=2*link_rad/len
-# 	temp1=(1-frac)*item.location[:,1]+frac*item.location[:,2]
-# 	temp2=0.35*item.location[:,1]+0.65*item.location[:,2]
-# 	x3d_spring=x3d_cyl([temp1 temp2],"rad",2.5*link_rad,"tran",0.3,"col",[1;1;0])  ## shell inner
-# 	x3d_spring*=x3d_pnt(item.location[:,1],"rad",2*link_rad,"col",[1;1;0]) ## ball inner
-#
-# 	temp1=0.65*item.location[:,1]+0.35*item.location[:,2]
-# 	temp2=frac*item.location[:,1]+(1-frac)*item.location[:,2]
-# 	x3d_spring_out=x3d_cyl([temp1 temp2],"rad",3*link_rad,"tran",0.3,"col",[1;1;0])  ## shell outer
-#
-# 	frac=0.65-link_rad/len
-# 	temp1=frac*item.location[:,1]+(1-frac)*item.location[:,2]
-# 	x3d_spring_out*=x3d_cyl([item.location[:,2] temp1],"rad",link_rad,"col",[1;1;1]) ## shaft
-#
-# 	frac=0.65+link_rad/len
-# 	temp2=frac*item.location[:,1]+(1-frac)*item.location[:,2]
-# 	x3d_spring_out*=x3d_cyl([temp1 temp2],"rad",2.3*link_rad,"col",[1;1;1]) ##piston
-# 	x3d_spring_out*=x3d_pnt(item.location[:,2],"rad",2*link_rad,"col",[1;1;0]) ## ball outer
-#
-# 	s*= x3d_spring x3d_spring_out
-# end
-#
-# for i=1:syst.data.nlinks
-# 	item=syst.data.links(i)
-# 	lcns=[item.location[:,1] item.location[:,2]]
-# 	s*= x3d_cyl(lcns,"rad",0.015,"col",[0 1 0])
-# end
-#
-# for i=1:syst.data.nactuators
-# 	item=syst.data.actuators(i)
-# 	lcns=[item.location[:,1] item.location[:,2]]
-# 	s*= x3d_cyl(lcns,"rad",0.01,"col",[0 1 0.5])
-# end
-#
-# for i=1:syst.data.nsensors
-# 	item=syst.data.sensors(i)
-# 	lcns=[item.location[:,1] item.location[:,2]]
-# 	s*= x3d_cyl(lcns,"rad",0.01,"col",[0 0.5 1])
-# end
-#
+
+for item in system.actuators
+    s *= x3d_cyl([item.location[1] item.location[2]], rad=0.01, col=[0 1 0.5])
+end
+
+for item in system.sensors
+    s *= x3d_cyl([item.location[1] item.location[2]], rad=0.01, col=[0 0.5 1])
+end
+
 # for i=1:syst.data.nbeams
 # 	item=syst.data.beams(i)
 # 	lcns=[item.location[:,1] item.location[:,2]]
@@ -132,21 +154,13 @@ end
 # 	end
 # end
 #
-# for i=1:syst.data.ntriangle_3s
-# 	item=syst.data.triangle_3s(i)
-# 	lcns=item.location
-# 	s*= x3d_ifs([0;0;0],[0;0;1;0],lcns,[0;1;2;-1],"col",[1 0 0.5],"tran",0.5)
-# 	avg=(lcns[:,1]+lcns[:,2]+lcns(:,3))/3
-# 	s*= x3d_cyl([avg  avg+0.05*item.unit], "col",[1 0 0.5])
-# 	s*= x3d_cyl([avg  avg+0.05*item.nu[:,1]], "col",[1 0 0.5])
-# 	s*= x3d_cyl([avg  avg+0.05*item.nu[:,2]], "col",[1 0 0.5])
-#
-# end
-#
-# x3d_save(s,[syst.config.dir.output filesep() "x3d" filesep() "system.x3d"])
-# verb && println("Drawing x3d done.") end
+
+x3d_save(s, joinpath(dir, "system.html"))
+verbose && println("Drawing x3d done.")
 
 ## *** MODIFIED TO DRAW GROUND PLANE AT -152.6mm FOR VEHICLE MODEL ***
 ##st=[st vrml_surf([0;4],[-1.5,1.5],[-.1526 -.1526;-.1526 -.1526])]
+
 s
+
 end
