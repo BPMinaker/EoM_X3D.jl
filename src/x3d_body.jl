@@ -1,4 +1,4 @@
-function x3d_body!(syst)
+function x3d_body!(syst::EoM.mbd_system)
 
 ## GPL here
 # This function builds an x3d model
@@ -6,7 +6,7 @@ function x3d_body!(syst)
     x3d_tags = ["ground" "upright" "strut" "arm" "wheel" "chassis" "rack" "crank" "rod" "bar"]  ## Define significant body names
     for i in syst.bodys  ## Loop over each body
         x3d = x3d_pnt([0,0,0], cubes=true, rad=[0.045,0.045,0.045], col=[0.5,0,0], tran=0.3)  ## Define default x3d string
-        for j = 1:length(x3d_tags)  ## Loop over each sig. name
+        for j in eachindex(x3d_tags)  ## Loop over each sig. name
             if occursin(x3d_tags[j], lowercase(i.name))  ## If the body name contains a sig. name, replace the default string
                 lcn = i.location  ## Record that body"s location
                 if j == 1 # ground

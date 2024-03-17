@@ -110,17 +110,18 @@ function eom_draw(system::EoM.mbd_system, verbose::Bool=false; folder="output", 
         else
             dirn = [0, 0, 0]
         end
-        s *= x3d_cyl([lcn, lcn + dirn], rad=0.01, col=[0, 1, 1])
-        s *= x3d_cyl([lcn + dirn, lcn + 1.5 * dirn], rad=0.015, cone=true, col=[0, 1, 1])
+
+        s *= x3d_cyl([lcn lcn + dirn], rad=0.01, col=[0.5, 0, 0.5])
+        s *= x3d_cyl([lcn + dirn lcn + 1.5 * dirn], rad=0.015, cone=true, col=[0.5, 0, 0.5])
 
         if norm(item.moment) > 0
             dirn = 0.2 * item.moment / norm(item.moment)
         else
             dirn = [0; 0; 0]
         end
-        s *= x3d_cyl([lcn, lcn + dirn], rad=0.01, col=[0, 1, 1])
-        s *= x3d_cyl([lcn + dirn, lcn + 1.5 * dirn], rad=0.015, cone=true, col=[0, 1, 1])
-        s *= x3d_cyl([lcn + 1.3 * dirn, lcn + 1.8 * dirn], rad=0.015, cone=true, col=[0, 1, 1])
+        s *= x3d_cyl([lcn lcn + dirn], rad=0.01, col=[0.5, 0, 0.5])
+        s *= x3d_cyl([lcn + dirn lcn + 1.5 * dirn], rad=0.015, cone=true, col=[0.5, 0, 0.5])
+        s *= x3d_cyl([lcn + 1.3 * dirn lcn + 1.8 * dirn], rad=0.015, cone=true, col=[0.5, 0, 0.5])
     end
 
 
