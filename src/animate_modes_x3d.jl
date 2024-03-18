@@ -1,4 +1,4 @@
-function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bool = false; folder = "output", overwrite::Bool = true, scale = 1, num = size(result.modes, 2))
+function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bool=false; folder="output", overwrite::Bool=true, scale=1, num=size(result.modes, 2))
     ## Copyright (C) 2017, Bruce Minaker
     ## animate_modes.jl is free software; you can redistribute it and/or modify it
     ## under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bo
     # remove and recreate x3d folder (default), or not
     if overwrite
         dir = joinpath(dir_date, system.name, "x3d")
-        rm(dir, recursive = true, force = true)
+        rm(dir, recursive=true, force=true)
         mkdir(dir)
     else
         tmstr = Dates.format(now(), "HH-MM-SS-s")

@@ -28,20 +28,12 @@ function x3d_cyl(x; rad=0.005, cone::Bool=false, tran=0.0, shin=0.5, col=[0.3, 0
         radtype = " radius="
     end
 
-    for i = 2:n
+    for i in 2:n
         d = x[:, i] - x[:, i-1]
         n = norm(d)
         if n > 0
             t = 0.5 * (x[:, i-1] + x[:, i])
             aa = axisang(x[:, i], x[:, i-1])
-
-#            pstn = "'$(t[1]) $(t[2]) $(t[3])'"
-#            rtn = "'$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'"
-#            radius = "'$rad'"
-#            height = "'$n'"
-#            color = "'$(col[1]) $(col[2]) $(col[3])'"
-#            trans = " transparency='$tran'"
-#            shiny = " shininess='$shin'"
 
             s *= "<Transform translation='$(t[1]) $(t[2]) $(t[3])' rotation='$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'>\n"
             s *= " <Shape>\n"
