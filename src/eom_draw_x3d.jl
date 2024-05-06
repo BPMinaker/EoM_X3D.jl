@@ -51,7 +51,7 @@ function eom_draw(system::EoM.mbd_system, verbose::Bool=false; folder="output", 
         if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
             s *= x3d_pnt(lcn, rad=0.025, col=[0, 0, 0.5])
         else
-            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0.5, 0.5, 0])
+            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0, 0, 0.5])
         end
     end
 
@@ -59,9 +59,9 @@ function eom_draw(system::EoM.mbd_system, verbose::Bool=false; folder="output", 
         lcn = item.location
 
         if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
-            s *= x3d_pnt(lcn, rad=0.025, col=[0, 0, 0.5])
+            s *= x3d_pnt(lcn, rad=0.025, col=[0.5, 0.5, 0])
         else
-            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0, 0, 0.5])
+            s *= x3d_cyl([lcn - 0.025 * (item.axis) / norm(item.axis) lcn + 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0.5, 0.5, 0])
         end
     end
 
