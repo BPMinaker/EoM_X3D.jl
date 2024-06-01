@@ -1,4 +1,10 @@
-function eom_draw(system::EoM.mbd_system, verbose::Bool=false; folder="output", overwrite::Bool=true)
+function eom_draw(
+    system::EoM.mbd_system,
+    verbose::Bool=false;
+    folder="output",
+    filename::String = system.name,
+    overwrite::Bool=true
+    )
     ## Copyright (C) 2017, Bruce Minaker
     ## eom_draw.jl is free software you can redistribute it and/or modify it
     ## under the terms of the GNU General Public License as published by
@@ -15,17 +21,10 @@ function eom_draw(system::EoM.mbd_system, verbose::Bool=false; folder="output", 
     ## This function draws the X3D file of the system
     verbose && println("Drawing x3d...")
 
-    # if no output folder exists create new empty output folder
-    !isdir(folder) && (mkdir(folder))
 
-    # record the date and time for the output filenames, ISO format
-    dtstr = Dates.format(now(), "yyyy-mm-dd")
-    dir_date = joinpath(folder, dtstr)
+    dir_date = EoM.setup(; folder)
 
-    # if no dated output folder exists, create new empty dated output folder
-    !isdir(dir_date) && (mkdir(dir_date))
-
-    dir = joinpath(dir_date, system.name)
+    dir = joinpath(dir_date, filename)
     !isdir(dir) && (mkdir(dir))
 
     dir = joinpath(dir_date, system.name, "x3d")

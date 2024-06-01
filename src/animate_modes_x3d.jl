@@ -1,4 +1,13 @@
-function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bool=false; folder="output", overwrite::Bool=true, scale=1, num=size(result.modes, 2))
+function animate_modes(
+    system::EoM.mbd_system,
+    result::EoM.analysis,
+    verbose::Bool=false;
+    folder="output",
+    filename::String = system.name,
+    overwrite::Bool=true,
+    scale=1,
+    num=size(result.modes, 2)
+)
     ## Copyright (C) 2017, Bruce Minaker
     ## animate_modes.jl is free software; you can redistribute it and/or modify it
     ## under the terms of the GNU General Public License as published by
@@ -20,27 +29,19 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bo
 
     verbose && println("Animating mode shapes...")
 
-    # if no output folder exists create new empty output folder
-    !isdir(folder) && (mkdir(folder))
+    dir_date = EoM.setup(; folder)
 
-    # record the date and time for the output filenames, ISO format
-    dtstr = Dates.format(now(), "yyyy-mm-dd")
-    dir_date = joinpath(folder, dtstr)
-
-    # if no dated output folder exists, create new empty dated output folder
-    !isdir(dir_date) && (mkdir(dir_date))
-
-    dir = joinpath(dir_date, system.name)
+    dir = joinpath(dir_date, filename)
     !isdir(dir) && (mkdir(dir))
 
     # remove and recreate x3d folder (default), or not
     if overwrite
-        dir = joinpath(dir_date, system.name, "x3d")
+        dir = joinpath(dir_date, filename, "x3d")
         rm(dir, recursive=true, force=true)
         mkdir(dir)
     else
         tmstr = Dates.format(now(), "HH-MM-SS-s")
-        dir = joinpath(dir_date, system.name, "x3d_" * tmstr)
+        dir = joinpath(dir_date, filename, "x3d_" * tmstr)
         mkdir(dir)
     end
 
@@ -70,7 +71,7 @@ function animate_modes(system::EoM.mbd_system, result::EoM.analysis, verbose::Bo
             pout = scale[i] * 0.5 * real(modes[:, i] * ones(1, length(tout)))
         end
 
-        for j ∈ 1:length(system.bodys)-1  ## For each body
+        for j in 1:length(system.bodys)-1  ## For each body
             pout[6*j-5:6*j-3, :] += system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
         end
 
