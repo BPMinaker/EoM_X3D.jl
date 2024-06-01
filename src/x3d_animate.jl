@@ -47,7 +47,7 @@ function x3d_animate(syst, tout, pout, file_name)
     end
 
 
-    for j in 1:length(syst.rigid_points)
+    for j in eachindex(syst.rigid_points)
         item = syst.rigid_points[j]
 
         ind = 6 * nsolid + 3 * j .+ (-2:0)
@@ -58,12 +58,12 @@ function x3d_animate(syst, tout, pout, file_name)
         if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
             x3d = x3d_pnt([0, 0, 0], rad=0.025, col=[0, 0, 0.5])
         else
-            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0.5, 0.5, 0])
+            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.02, col=[0, 0, 0.5])
         end
         s1 *= x3d_motion(tout, lcn, rot, "$(j)_rigid_point", x3d) ## Add the x3d string for the motion indicated by the mode shape
     end
 
-    for j in 1:length(syst.flex_points)
+    for j in eachindex(syst.flex_points)
         item = syst.flex_points[j]
 
         ind = 6 * nsolid + 3 * length(syst.rigid_points) + 3 * j .+ (-2:0)
@@ -73,16 +73,16 @@ function x3d_animate(syst, tout, pout, file_name)
         rot = vcat(zeros(2, n), ones(1, n), zeros(1, n))
 
         if (item.forces == 3 || item.forces == 0) && (item.moments == 3 || item.moments == 0)
-            x3d = x3d_pnt([0, 0, 0], rad=0.025, col=[0, 0, 0.5])
+            x3d = x3d_pnt([0, 0, 0], rad=0.025, col=[0.5, 0.5, 0])
         else
-            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0, 0, 0.5])
+            x3d = x3d_cyl([-0.025 * (item.axis) / norm(item.axis) 0.025 * (item.axis) / norm(item.axis)], rad=0.021, col=[0.5, 0.5, 0])
         end
         s1 *= x3d_motion(tout, lcn, rot, "$(j)_flex_point", x3d) ## Add the x3d string for the motion indicated by the mode shape
     end
 
     s2 = ""
     link_rad = 0.01
-    for j in 1:length(syst.links)
+    for j in eachindex(syst.links)
         len = norm(syst.links[j].location[2] - syst.links[j].location[1])  ## build x3d link
         x3d_link = x3d_cyl([[0, 0, 0] [0, len, 0]], rad=link_rad, col=[0, 0.5, 0])
 
@@ -102,7 +102,7 @@ function x3d_animate(syst, tout, pout, file_name)
     s3 = ""
     s4 = ""
     link_rad = 0.015
-    for j in 1:length(syst.springs)
+    for j in eachindex(syst.springs)
         len = 0.65 * syst.springs[j].length
         twist = syst.springs[j].twist
 
