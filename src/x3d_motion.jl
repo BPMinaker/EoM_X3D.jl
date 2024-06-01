@@ -15,7 +15,6 @@ function x3d_motion(time, lcn, rtn, grp, x3d)
 
     pstn = ""
     rntn = ""
-    scal = ""
     tme = ""
 
     m = length(time)
