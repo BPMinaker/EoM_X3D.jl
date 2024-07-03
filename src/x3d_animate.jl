@@ -15,10 +15,6 @@ function x3d_animate(syst, tout, pout, file_name)
 
     ## This function draws the animated x3d file of the system
 
-#    nbodys = length(syst.bodys)
-#    nsolid = nbodys - 1
-#    npoint = length(syst.rigid_points) + length(syst.flex_points) + length(syst.loads)
-
     tscale = tout[end]
     tout /= tscale
     n = size(pout, 1)

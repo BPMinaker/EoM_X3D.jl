@@ -1,4 +1,12 @@
-function animate_history(folder, mbd, pout, tout; verbose=false)
+function animate_history(
+    system::EoM.mbd_system,
+    pout,
+    tout,
+    verbose::Bool=false;
+    folder="output",
+    filename::String = system.name,
+    overwrite::Bool=true
+)
     ## Copyright (C) 2017, Bruce Minaker
     ## animate_history.jl is free software; you can redistribute it and/or modify it
     ## under the terms of the GNU General Public License as published by
@@ -16,24 +24,38 @@ function animate_history(folder, mbd, pout, tout; verbose=false)
 
     verbose && println("Animating history...")
 
+    dir_date = EoM.setup(; folder)
+
+    dir = joinpath(dir_date, filename)
+    !isdir(dir) && (mkdir(dir))
+
+    # remove and recreate x3d folder (default), or not
+    if overwrite
+        dir = joinpath(dir_date, filename, "x3d")
+        rm(dir, recursive=true, force=true)
+        mkdir(dir)
+    else
+        tmstr = Dates.format(now(), "HH-MM-SS-s")
+        dir = joinpath(dir_date, filename, "x3d_" * tmstr)
+        mkdir(dir)
+    end
+
     l = range(1, step=Int(round(0.05 / tout.step.hi)), stop=length(tout))
 
     pout = pout[:, l]
     tout = tout[l]
 
-    dir = joinpath(folder, "x3d")
-    if (~isdir(dir))
-        mkdir(dir)
+    ## Add the static location to the displacement
+    for j = 1:length(system.bodys)-1  ## For each body
+        pout[6 * j .+ (-5:-3), :] += system.bodys[j].location * ones(1, size(pout, 2))
     end
 
-    for j = 1:length(mbd.system.bodys)-1  ## For each body
-        pout[6*j-5:6*j-3, :] += mbd.system.bodys[j].location * ones(1, size(pout, 2))  ## Add the static location to the displacement
-    end
-
-    pout = item_locations(mbd.system, pout)  ## Compute locations of the connecting items
+    pout = item_locations(system, pout)  ## Compute locations of the connecting items
     pout = pout'
 
-    x3d_animate(mbd.system, tout, pout, joinpath(dir, "history.html"))
+    x3d_body!(system)  ## Fill in the default graphics data
+    x3d_connections!(system)  ## Fill in the connection data
+    x3d_animate(system, tout, pout, joinpath(dir, "history.html"))
 
     verbose && println("Animations complete.")
 
