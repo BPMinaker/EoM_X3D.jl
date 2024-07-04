@@ -4,7 +4,7 @@ function animate_history(
     tout,
     verbose::Bool=false;
     folder="output",
-    filename::String = system.name,
+    filename::String=system.name,
     overwrite::Bool=true
 )
     ## Copyright (C) 2017, Bruce Minaker
@@ -47,7 +47,7 @@ function animate_history(
 
     ## Add the static location to the displacement
     for j = 1:length(system.bodys)-1  ## For each body
-        pout[6 * j .+ (-5:-3), :] += system.bodys[j].location * ones(1, size(pout, 2))
+        pout[6*j.+(-5:-3), :] += system.bodys[j].location * ones(1, size(pout, 2))
     end
 
     pout = item_locations(system, pout)  ## Compute locations of the connecting items
