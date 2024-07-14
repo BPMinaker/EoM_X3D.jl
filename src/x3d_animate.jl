@@ -1,4 +1,9 @@
-function x3d_animate(syst, tout, pout, file_name)
+function x3d_animate(
+    syst::EoM.mbd_system,
+    tout::StepRangeLen{Float64,Base.TwicePrecision{Float64},Base.TwicePrecision{Float64}},
+    pout,
+    file_name::String
+)
     ## Copyright (C) 2010, Bruce Minaker, Rob Rieveley
     ## This file is intended for use with Octave.
     ## x3d_animate.m is free software; you can redistribute it and/or modify it

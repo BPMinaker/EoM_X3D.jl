@@ -1,7 +1,7 @@
 function animate_history(
     system::EoM.mbd_system,
+    tout::StepRangeLen{Float64,Base.TwicePrecision{Float64},Base.TwicePrecision{Float64}},
     pout,
-    tout,
     verbose::Bool=false;
     folder="output",
     filename::String=system.name,
