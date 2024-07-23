@@ -4,8 +4,7 @@ function animate_history(
     pout,
     verbose::Bool=false;
     folder="output",
-    filename::String=system.name,
-    overwrite::Bool=true
+    filename::String=system.name
 )
     ## Copyright (C) 2017, Bruce Minaker
     ## animate_history.jl is free software; you can redistribute it and/or modify it
@@ -29,16 +28,8 @@ function animate_history(
     dir = joinpath(dir_date, filename)
     !isdir(dir) && (mkdir(dir))
 
-    # remove and recreate x3d folder (default), or not
-    if overwrite
-        dir = joinpath(dir_date, filename, "x3d")
-        rm(dir, recursive=true, force=true)
-        mkdir(dir)
-    else
-        tmstr = Dates.format(now(), "HH-MM-SS-s")
-        dir = joinpath(dir_date, filename, "x3d_" * tmstr)
-        mkdir(dir)
-    end
+    dir = joinpath(dir_date, filename, "x3d")
+    !isdir(dir) && (mkdir(dir))
 
     l = range(1, step=Int(round(0.05 / tout.step.hi)), stop=length(tout))
 
