@@ -1,3 +1,5 @@
+__precompile__(false)
+
 module EoM_X3D
 
 using LinearAlgebra
