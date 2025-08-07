@@ -1,7 +1,6 @@
 function animate_history(
     system::EoM.mbd_system,
-    tout::StepRangeLen{Float64,Base.TwicePrecision{Float64},Base.TwicePrecision{Float64}},
-    pout,
+    yout::EoM.lti_soln,
     verbose::Bool=false;
     folder="output",
     filename::String=system.name
@@ -31,10 +30,9 @@ function animate_history(
     dir = joinpath(dir_date, filename, "x3d")
     !isdir(dir) && (mkdir(dir))
 
-    l = range(1, step=Int(round(0.05 / tout.step.hi)), stop=length(tout))
-
-    pout = pout[:, l]
-    tout = tout[l]
+    l = 1:50:length(yout.t)  ## Reduce the number of points to animate
+    tout = yout.t[l]
+    pout = hcat(yout.y[l]...)
 
     ## Add the static location to the displacement
     for j = 1:length(system.bodys)-1  ## For each body
