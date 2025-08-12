@@ -21,7 +21,6 @@ function eom_draw(
     ## This function draws the X3D file of the system
     verbose && println("Drawing x3d...")
 
-
     dir_date = EoM.setup(; folder)
 
     dir = joinpath(dir_date, filename)
@@ -40,8 +39,8 @@ function eom_draw(
         #  	lcns=[item.location(:,1)]+[0; 0; 2]
         #  	pstn=sprintf('%f %f %f',lcns)
         #  	s=[s  '<Viewpoint position="' pstn '"/>\n' ]
-
-        s *= "<Transform translation='$(item.location[1]) $(item.location[2]) $(item.location[3])' >\n" * item.x3d * "</Transform>\n"
+        ils = join(string.(item.location), " ")
+        s *= "<Transform translation='$(ils)' >\n" * item.x3d * "</Transform>\n"
     end
 
     for item in system.rigid_points

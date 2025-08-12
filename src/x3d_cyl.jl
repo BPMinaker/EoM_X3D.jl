@@ -19,6 +19,7 @@ function x3d_cyl(x; rad=0.005, cone::Bool=false, tran=0.0, shin=0.5, col=[0.3, 0
 
     s = ""
     n = size(x, 2)
+    cs = join(string.(col), " ")
 
     if cone
         shptype = "Cone "
@@ -30,19 +31,21 @@ function x3d_cyl(x; rad=0.005, cone::Bool=false, tran=0.0, shin=0.5, col=[0.3, 0
 
     for i in 2:n
         d = x[:, i] - x[:, i-1]
-        n = norm(d)
-        if n > 0
+        seglen = norm(d)
+        if seglen > 0
             t = 0.5 * (x[:, i-1] + x[:, i])
+            ts = join(string.(t), " ")
             aa = axisang(x[:, i], x[:, i-1])
-
-            s *= "<Transform translation='$(t[1]) $(t[2]) $(t[3])' rotation='$(aa[1]) $(aa[2]) $(aa[3]) $(aa[4])'>\n"
-            s *= " <Shape>\n"
-            s *= "  <" * shptype * "height=$n" * radtype * "$rad></" * shptype * ">\n"
-            s *= "  <Appearance>\n"
-            s *= "   <Material emissiveColor='$(col[1]) $(col[2]) $(col[3])' diffuseColor='$(col[1]) $(col[2]) $(col[3])' specularColor='1 1 1' shininess='$shin' transparency='$tran'></Material>\n"
-            s *= "  </Appearance>\n"
-            s *= " </Shape>\n"
-            s *= "</Transform>\n"
+            aas = join(string.(aa), " ")
+            s *= """
+<Transform translation='$(ts)' rotation='$(aas)'>
+ <Shape>
+  <$(shptype)height=$(seglen)$(radtype)$(rad)></$(shptype)>
+  <Appearance>
+   <Material emissiveColor='$(cs)' diffuseColor='$(cs)' specularColor='1 1 1' shininess='$(shin)' transparency='$(tran)'></Material>
+  </Appearance>
+ </Shape>
+</Transform>"""
         end
     end
     s

@@ -38,17 +38,4 @@ function x3d_connections!(syst::EoM.mbd_system; trans::Bool=false)
             syst.bodys[i.body_number[j]].x3d *= x3d  ## Add the x3d to the body
         end
     end
-
-#=     for i in syst.springs  ## For every spring
-        for j = 1:2  ## For each body it attachs
-            joint_lcn = i.location[j]  ## Find the location
-            body_lcn = syst.bodys[i.body_number[j]].location  ## Find the body location
-            this_body_name = lowercase(syst.bodys[i.body_number[j]].name)
-            if !(this_body_name == "ground") && !(this_body_name == "chassis") ## If it's not the ground or the chassis
-                x3d = x3d_cyl([(joint_lcn - body_lcn) [0,0,0]], rad=link_rad, col=color)  ## Draw the spring mount
-                syst.bodys[i.body_number[j]].x3d *= x3d  ## Add the x3d to the body
-            end
-        end
-    end =#
-
 end  ## Leave

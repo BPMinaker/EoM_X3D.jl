@@ -15,6 +15,8 @@ function x3d_ifs(; pstn=[0, 0, 0], rotn=[0, 0, 10], vert=[[0, 0, 0] [1, 0, 0] [1
 
     tran = 0
     col = [0.3, 0.4, 0.9]
+    cs = join(string.(col), " ")
+
 
     i = 1
     while i <= nargin
@@ -33,29 +35,25 @@ function x3d_ifs(; pstn=[0, 0, 0], rotn=[0, 0, 10], vert=[[0, 0, 0] [1, 0, 0] [1
     n = size(pstn, 2)
 
     for i in 1:n
-        if tran == 1
-            trans = " transparency=$(tran[i])"  # something broken here? 
+        ps = join(string.(pstn[:,i]), " ")
+        rs = join(string.(rotn[:,i]), " ")
+
+        if tran > 0
+            tran_s = " transparency=$(tran[i])"  # something broken here? 
         else
             tran_s = ""
         end
-        s *= "<Transform translation='$(pstn[1,i]) $(pstn[2,i]) $(pstn[3,i])' rotation='$(rotn[1,i]) $(rotn[2,i]) $(rotn[3,i])'>\n"
-        s *= " <Shape>\n"
-        s *= "  <Appearance>\n"
-        s *= "   <Material  emissiveColor='$(col[1]) $(col[2]) $(col[3])' diffuseColor='$(col[1]) $(col[2]) $(col[3])'" * tran_s * "/>\n"
-        s *= "  </Appearance>\n"
-        s *= " <IndexedFaceSet coordIndex='"
-        for j in 1:size(faces, 2)
-            s *= "$(faces[1,j]) $(faces[2,j]) $(faces[3,j]) $(faces[4,j]) $(faces[5,j])"
-        end
-        s *= "'>\n"
-        s *= "  <Coordinate point='"
-        for j in 1:size(vert, 2)
-            s *= "$(vert[1,j]) $(vert[2,j]) $(vert[3,j]) $(vert[4,j]) $(vert[5,j])"
-        end
-        s *= "'/>\n"
-        s *= " </IndexedFaceSet>\n"
-        s *= " </Shape>\n"
-        s *= "</Transform>\n"
+    s *= """
+<Transform translation='$(ps)' rotation='$(rs)'>
+ <Shape>
+  <Appearance>
+   <Material  emissiveColor='$(cs)' diffuseColor='$(cs)'$(tran_s)/>
+  </Appearance>
+  <IndexedFaceSet coordIndex='$(join([join(faces[:, j], " ") for j in axes(faces, 2)], ""))'>
+   <Coordinate point='$(join([join(vert[:, j], " ") for j in axes(vert, 2)], ""))'/>
+  </IndexedFaceSet>
+ </Shape>
+</Transform>"""
     end
     s
 end

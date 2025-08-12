@@ -19,32 +19,27 @@ function x3d_motion(time, lcn, rtn, grp, x3d)
 
     m = length(time)
 
-    for i in 1:m-1
-        pstn *= "$(lcn[1,i]) $(lcn[2,i]) $(lcn[3,i]),\n"
-    end
-    pstn *= "$(lcn[1,m]) $(lcn[2,m]) $(lcn[3,m])\n"
+    pstn = join([join(string.(lcn[:,i]), " ") for i in 1:m], ",\n")
+    rntn = join([join(string.(rtn[:,i]), " ") for i in 1:m], ",\n")
+    tme = join(string.(time), ", ")
 
-    for i in 1:m-1
-        rntn *= "$(rtn[1,i]) $(rtn[2,i]) $(rtn[3,i]) $(rtn[4,i]),\n"
-    end
-    rntn *= "$(rtn[1,m]) $(rtn[2,m]) $(rtn[3,m]) $(rtn[4,m])\n"
-
-    for i in 1:m-1
-        tme *= "$(time[i]), "
-    end
-    tme *= "$(time[m])"
-
-    s = "<PositionInterpolator DEF='IDt" * grp * "' keyValue='\n" * pstn * "' key='" * tme * "'></PositionInterpolator>\n"
-    s *= "<OrientationInterpolator DEF='IDr" * grp * "' keyValue='\n" * rntn * "' key='" * tme * "'></OrientationInterpolator>\n"
-
-    s *= "<Transform DEF='ID" * grp * "' >\n"
-    s *= x3d
-    s *= "</Transform>\n"
-
-    s *= "<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDt" * grp * "' toField='set_fraction'></ROUTE>\n"
-    s *= "<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDr" * grp * "' toField='set_fraction'></ROUTE>\n"
-    s *= "<ROUTE fromNode='IDt" * grp * "' fromField='value_changed' toNode='ID" * grp * "' toField='set_translation'></ROUTE>\n"
-    s *= "<ROUTE fromNode='IDr" * grp * "' fromField='value_changed' toNode='ID" * grp * "' toField='set_rotation'></ROUTE>\n"
+s = """
+<PositionInterpolator DEF='IDt$(grp)' keyValue='
+$(pstn)
+' key='
+$(tme)
+'></PositionInterpolator>
+<OrientationInterpolator DEF='IDr$(grp)' keyValue='
+$(rntn)
+' key='
+$(tme)
+'></OrientationInterpolator>
+<Transform DEF='ID$(grp)' >
+$(x3d)</Transform>
+<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDt$(grp)' toField='set_fraction'></ROUTE>
+<ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDr$(grp)' toField='set_fraction'></ROUTE>
+<ROUTE fromNode='IDt$(grp)' fromField='value_changed' toNode='ID$(grp)' toField='set_translation'></ROUTE>
+<ROUTE fromNode='IDr$(grp)' fromField='value_changed' toNode='ID$(grp)' toField='set_rotation'></ROUTE>"""
 
     s
 end

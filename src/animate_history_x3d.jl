@@ -23,31 +23,23 @@ function animate_history(
     verbose && println("Animating history...")
 
     dir_date = EoM.setup(; folder)
-
-    dir = joinpath(dir_date, filename)
-    !isdir(dir) && (mkdir(dir))
-
     dir = joinpath(dir_date, filename, "x3d")
-    !isdir(dir) && (mkdir(dir))
+    isdir(dir) || mkpath(dir)
 
     l = 1:50:length(yout.t)  ## Reduce the number of points to animate
     tout = yout.t[l]
     pout = hcat(yout.y[l]...)
 
-    ## Add the static location to the displacement
-    for j = 1:length(system.bodys)-1  ## For each body
-        pout[6*j.+(-5:-3), :] += system.bodys[j].location * ones(1, size(pout, 2))
+    # Add static location to displacement
+    for j = 1:length(system.bodys)-1
+        pout[6*j.+(-5:-3), :] .+= system.bodys[j].location
     end
 
-    pout = item_locations(system, pout)  ## Compute locations of the connecting items
-    pout = pout'
-
-    x3d_body!(system)  ## Fill in the default graphics data
-    x3d_connections!(system)  ## Fill in the connection data
+    pout = item_locations(system, pout)'
+    x3d_body!(system)
+    x3d_connections!(system)
     x3d_animate(system, tout, pout, joinpath(dir, "history.html"))
 
     verbose && println("Animations complete.")
-
     nothing
-
 end
