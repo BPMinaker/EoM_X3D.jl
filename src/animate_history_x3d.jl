@@ -30,8 +30,12 @@ function animate_history(
     tout = yout.t[l]
     pout = hcat(yout.y[l]...)
 
+    n = length(system.bodys) - 1
+
+    pout = pout[end - 6*n + 1:end, :]
+
     # Add static location to displacement
-    for j = 1:length(system.bodys)-1
+    for j in 1:n
         pout[6*j.+(-5:-3), :] .+= system.bodys[j].location
     end
 
