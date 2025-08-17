@@ -21,7 +21,7 @@ function x3d_motion(time, lcn, rtn, grp, x3d)
 
     pstn = join([join(string.(lcn[:,i]), " ") for i in 1:m], ",\n")
     rntn = join([join(string.(rtn[:,i]), " ") for i in 1:m], ",\n")
-    tme = join(string.(time), ", ")
+    tme = join(string.(time), ",\n")
 
 s = """
 <PositionInterpolator DEF='IDt$(grp)' keyValue='
