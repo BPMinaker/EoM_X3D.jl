@@ -3,7 +3,6 @@ function x3d_body!(syst::EoM.mbd_system)
     ## GPL here
     # This function builds an x3d model
 
-    x3d_tags = ["ground", "upright", "strut", "arm", "wheel", "chassis", "rack", "crank", "rod", "bar"]
     f1(_) = x3d_pnt([0, 0, 0], rad=0.03, col=[0.5, 0, 0])
     f2(_) = x3d_pnt([0, 0, 0], rad=0.02, col=[0.5, 0, 0])
     f3(_) = x3d_pnt([0, 0, 0], rad=0.015, col=[0.5, 0, 0])
@@ -36,7 +35,7 @@ function x3d_body!(syst::EoM.mbd_system)
     for i in syst.bodys
         name_lc = lowercase(i.name)
         x3d = x3d_pnt([0, 0, 0], cubes=true, rad=[0.045, 0.045, 0.045], col=[0.5, 0, 0], tran=0.3)
-        for tag in x3d_tags
+        for tag in eachindex(tag_actions)
             if occursin(tag, name_lc)
                 x3d = tag_actions[tag](i)
                 break
