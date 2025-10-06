@@ -35,7 +35,7 @@ $(x3d)</Transform>
 <ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDt$(grp)' toField='set_fraction'></ROUTE>
 <ROUTE fromNode='IDtimer' fromField='fraction_changed' toNode='IDr$(grp)' toField='set_fraction'></ROUTE>
 <ROUTE fromNode='IDt$(grp)' fromField='value_changed' toNode='ID$(grp)' toField='set_translation'></ROUTE>
-<ROUTE fromNode='IDr$(grp)' fromField='value_changed' toNode='ID$(grp)' toField='set_rotation'></ROUTE>"""
-
+<ROUTE fromNode='IDr$(grp)' fromField='value_changed' toNode='ID$(grp)' toField='set_rotation'></ROUTE>
+"""
     s
 end

@@ -77,8 +77,7 @@ function x3d_save(frag, file_name, time=0)
         s *= "<TimeSensor DEF='IDtimer' loop='true' cycleInterval='$(time)'></TimeSensor>\n"
     end
     s *= """
-$(frag)
-</Transform>
+$(frag)</Transform>
 </Scene>
 </x3d>
 </body>

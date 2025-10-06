@@ -38,10 +38,11 @@ function x3d_pnt(x; cubes=false, rad=[0.01, 0.01, 0.01], tran=0, shin=0.5, col=[
  <Shape>
   <$(shptype)$(radtype)$(radius)'></$(shptype)>
   <Appearance>
-   <Material emissiveColor='$(cs)' diffuseColor='$(cs)' specularColor='1 1 1' shininess='$(shin)' transparency='$(tran)' ></Material>
+   <Material emissiveColor='$(cs)' diffuseColor='$(cs)' specularColor='1 1 1' shininess='$(shin)' transparency='$(tran)'/>
   </Appearance>
  </Shape>
-</Transform>"""
+</Transform>
+"""
     end
     s
 end

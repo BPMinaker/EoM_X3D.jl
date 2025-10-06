@@ -42,10 +42,11 @@ function x3d_cyl(x; rad=0.005, cone::Bool=false, tran=0.0, shin=0.5, col=[0.3, 0
  <Shape>
   <$(shptype)height=$(seglen)$(radtype)$(rad)></$(shptype)>
   <Appearance>
-   <Material emissiveColor='$(cs)' diffuseColor='$(cs)' specularColor='1 1 1' shininess='$(shin)' transparency='$(tran)'></Material>
+   <Material emissiveColor='$(cs)' diffuseColor='$(cs)' specularColor='1 1 1' shininess='$(shin)' transparency='$(tran)'/>
   </Appearance>
  </Shape>
-</Transform>"""
+</Transform>
+"""
         end
     end
     s
