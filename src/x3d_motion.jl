@@ -13,10 +13,6 @@ function x3d_motion(time, lcn, rtn, grp, x3d)
     ##
     ##--------------------------------------------------------------------
 
-    pstn = ""
-    rntn = ""
-    tme = ""
-
     m = length(time)
 
     pstn = join([join(string.(lcn[:,i]), " ") for i in 1:m], ",\n")

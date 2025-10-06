@@ -30,30 +30,46 @@ function x3d_save(frag, file_name, time=0)
 <Transform rotation='1 0 0 -1.571'>
 <Group DEF='axis'>
  <Transform translation='0 0 0.100' rotation='1 0 0 1.571'>
-  <Shape DEF='cone'>
-   <Cone height='0.025'  bottomRadius='0.005'></Cone>
+  <Shape>
+   <Cone DEF='point' height='0.025' bottomRadius='0.005'></Cone>
    <Appearance DEF='blue'>
-     <Material diffuseColor='0.0 0.0 0.5' emissiveColor='0.0 0.0 0.5'></Material>
+     <Material diffuseColor='0.0 0.0 0.5' emissiveColor='0.0 0.0 0.5'/>
    </Appearance>
   </Shape>
  </Transform>
  <Transform translation='0 0.100 0'>
-  <Shape USE='cone'></Shape>
+  <Shape>
+  <Cone USE='point'></Cone>
+   <Appearance DEF='green'>
+     <Material diffuseColor='0.0 0.5 0.0' emissiveColor='0.0 0.5 0.0'/>
+   </Appearance>
+  </Shape>
  </Transform>
  <Transform translation='0.100 0 0' rotation='0 0 1 -1.571'>
-  <Shape USE='cone'></Shape>
+  <Shape>
+   <Cone USE='point'></Cone>
+   <Appearance DEF='red'>
+     <Material diffuseColor='0.5 0.0 0.0' emissiveColor='0.5 0.0 0.0'/>
+   </Appearance>
+  </Shape>
  </Transform>
  <Transform translation='0 0 0.050' rotation='1 0 0 1.571'>
-  <Shape DEF='cyl'>
-   <Cylinder height='0.090'  radius='0.0025'></Cylinder>
+  <Shape>
+   <Cylinder DEF='arm' height='0.090' radius='0.0025'></Cylinder>
    <Appearance USE='blue'></Appearance>
   </Shape>
  </Transform>
  <Transform translation='0 0.050 0'>
-  <Shape USE='cyl'></Shape>
+  <Shape>
+    <Cylinder USE='arm'></Cylinder>
+   <Appearance USE='green'></Appearance>
+  </Shape>
  </Transform>
  <Transform translation='0.050 0 0' rotation='0 0 1 -1.571'>
-  <Shape USE='cyl'></Shape>
+  <Shape>
+    <Cylinder USE='arm'></Cylinder>
+   <Appearance USE='red'></Appearance>
+  </Shape>
  </Transform>
 </Group>
 """
