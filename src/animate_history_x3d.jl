@@ -43,7 +43,7 @@ function animate_history(
     x3d_body!(system)
     x3d_connections!(system)
     
-    timestamp = Dates.format(now(), "HH-MM-SS")
+    timestamp = Dates.format(now(), "HH-MM-SS-s")
     history_file = joinpath(dir, "history_$(timestamp).html")
     x3d_animate(system, tout, pout, history_file)
 
