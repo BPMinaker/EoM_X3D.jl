@@ -42,7 +42,10 @@ function animate_history(
     pout = item_locations(system, pout)'
     x3d_body!(system)
     x3d_connections!(system)
-    x3d_animate(system, tout, pout, joinpath(dir, "history.html"))
+    
+    timestamp = Dates.format(now(), "HH-MM-SS")
+    history_file = joinpath(dir, "history_$(timestamp).html")
+    x3d_animate(system, tout, pout, history_file)
 
     verbose && println("Animations complete.")
     nothing
