@@ -1,23 +1,14 @@
-__precompile__(false)
-
 module EoM_X3D
 
 using LinearAlgebra
-using Dates
 
-import EoM
+export x3d_cyl
+export x3d_ifs
+export x3d_motion
+export x3d_pnt
+export x3d_save
+export axisang
 
-export animate_modes
-export animate_history
-export eom_draw
-
-include("animate_modes_x3d.jl")
-include("animate_history_x3d.jl")
-include("eom_draw_x3d.jl")
-include("item_locations.jl")
-include("x3d_animate.jl")
-include("x3d_body.jl")
-include("x3d_connections.jl")
 include("x3d_cyl.jl")
 include("x3d_ifs.jl")
 include("x3d_motion.jl")
